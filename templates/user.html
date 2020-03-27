@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    Votr
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <!-- CSS Files -->
+  <link href="{{ url_for("static", filename="css/bootstrapp.min.css") }}" rel="stylesheet" />
+  <link href="{{ url_for("static", filename="css/now-ui-dashboard.css") }}" rel="stylesheet" />
+
+</head>
+
+<body class="">
+  <div class="wrapper ">
+ <div class="sidebar" data-color="green">
+      <div class="sidebar-wrapper" id="sidebar-wrapper">
+        <ul class="nav">
+         <li >Hey {{ user[0]["firstname"] }}!</li>
+          <li class="active ">
+            <a href="./dashboard.html">
+              <i class="fas fa-home"></i>
+              <p>Home</p>
+            </a>
+          </li>
+          
+          <li>
+            <a href="./.html">
+              <i class="fas fa-poll"></i>
+              <p>Poll Results</p>
+            </a>
+          </li>
+          <li>
+            <a href="./user.html">
+              <i class="fas fa-user"></i>
+              <p>User Profile</p>
+            </a>
+          </li>
+         <li>
+            <a href="{{ url_for('logout') }}">
+              <i class="fas fa-sign-out-alt" ></i>
+              <p>Logout</p>
+            </a>
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel" id="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="#pablo">Dashboard</a>
+          </div>
+          
+        </div>
+      </nav>
+ 
+
+</body>
+
+</html>
