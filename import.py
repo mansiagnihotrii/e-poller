@@ -18,7 +18,7 @@ def main():
     #TABLE TO STORE VOTES' INFORMATION
     db.execute("CREATE TABLE votes (pollid INTEGER NOT NULL FOREIGN KEY REFERENCES poll(pollid),
                 user_id INTEGER NOT NULL FOREIGN KEY REFERENCES user(user_id),
-                option VARCHAR NOT NULL,voted INTEGER DEFAULT 0)")
+                option INTEGER NOT NULL)")
 
 
 if __name__ == "__main__":
