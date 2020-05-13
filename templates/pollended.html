@@ -1,0 +1,10 @@
+{% extends "poll.html" %}
+
+{% block title %} ENDED POLLS {% endblock %}
+        {% block heading %}      <h1 class="h3 mb-0 text-gray-800">Ended Polls</h1> {% endblock heading %}
+
+
+  {% block form %}    <form method="post" action="/pollscreated/ended"> {% endblock form %}
+            {% block button %}
+                     <button class="btn btn-lg btn-success btn-block" id='result' type="submit" name="result">Result</button>
+           {% endblock button %}
