@@ -24,26 +24,14 @@
 
   <body>
         <nav class="navbar navbar-default navbar-fixed-top">
-          <ul class="nav nav-pills pull-right">
-            {% if session.get('user_id') %}
-            <li class="welcome-message">Hey {{ user[0]["firstname"] }}!</li>
-              <li role="presentation"><a href="{{ url_for('logout') }}">Logout</a></li>
-            {% endif %}
-            <li role="presentation"><a href="/polls">Polls</a></li>
-            <li role="presentation"><a href="https://github.com/danidee10/e-Poller">Github</a></li>
-          </ul>
-          <a style="padding-left: 30px;" href="/"><img src="{{ url_for("static", filename="images/pagelogo.png") }}" /></a>
+            <a style="padding-left: 30px;" href="/"><img src="{{ url_for("static", filename="images/pagelogo.png") }}" /></a>
         </nav>
 
       <div class="jumbotron">
         <h1>It's easier with e-Poller!</h1>
         <p class="lead">Create free online polls today with e-Poller</p>
 
-        {% if not session.get('user') %}
-        <p><a class="btn btn-lg btn-success" href="{{ url_for('register') }}" role="button">Sign up today</a></p>
-        {% else %}
-        <p><a class="btn btn-lg btn-success" href="/polls" role="button">Create a poll</a></p>
-        {% endif %}
+     
       </div>
 
       <div class="container">
