@@ -8,11 +8,11 @@ If you are not familiar with heroku , follow these steps:
 
 1. Navigate to "signup.heroku.com" and create an account. Login after you created the account.
 2. Create new app. The app name can be of your choice.
-3. Navigate to "Resources" tab in the header of heroku dashboard. Then type Heroku Postgres into the Add-ons search field. Select Heroku Postgres from the dropdown.
+3. Navigate to "Resources" tab in the header of heroku dashboard. Then type "Heroku Postgres" into the Add-ons search field. Select "Heroku Postgres" from the dropdown.
 4. Select "Hobby Dev-Free" plan and click "Provision".
 ****Your free postgreSQL Database is created****
 5. Navigate to "Heroku Postgres"-->"Settings"-->"View Credentials" to see your credentials
-6. Follow the link for more info. (https://devcenter.heroku.com/articles/heroku-postgresql)
+6. Follow the [link](https://devcenter.heroku.com/articles/heroku-postgresql) for more info. 
 
 
 ### SET UP ENVIRONMENT VARIABLES
