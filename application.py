@@ -6,58 +6,52 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import login_required
-#jinja_env = Environment(extensions=['jinja2.ext.loopcontrols'])
-app = Flask(__name__)
 
 
-# Check for environment variable
+epoller= Flask(__name__)
+
+
+# CHECK FOR ENVIRONMENT VARIABLES
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
-# Configure session to use filesystem
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+# CONFIGURE SESSION TO USE FILESYSTEM
+epoller.config["SESSION_PERMANENT"] = False
+epoller.config["SESSION_TYPE"] = "filesystem"
+Session(epoller)
 
-# Set up database
+# SET UP DATABASE
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-
-#FETCH USER_ID
-def userid(user_id):
-    user = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': user_id}).fetchall()
-    return user
-
-
-#FUNCTION TO VOTE FOR POLL
+#FUNCTION TO INSERT VOTE INTO DATABASE
 def voteforpoll(pollid,option):
     db.execute("INSERT INTO votes (pollid,user_id,option) VALUES(:pollid,:user_id,:option)",
                         {'pollid':pollid, 'user_id':int(session["user_id"]), 'option':option})
     db.commit()
 
 
-#CHECK WHETHER POLL IS ACTIVE OR NOT
+#FUNCTION TO CHECK WHETHER USER ALREADY VOTED OR NOT
 def checkpoll():
     listt=db.execute("SELECT DISTINCT pollid FROM votes WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
     check=[x[0] for x in listt]
     return check
 
 
-#RETURN POLL RESULT
+#FUNCTION TO RETURN RESULT OF A POLL
 def result(pollid):
-    #FETCH TOTAL VOTES RECIEVED BY EACH OPTION FOR GIVEN POLL
+    #LIST1 CONTAINS VOTES EACH OPTION RECEIVED
     list1=db.execute("SELECT COUNT(option)AS result FROM votes WHERE pollid=:pollid GROUP BY option ORDER BY option ASC",{'pollid':pollid}).fetchall()
-    #FETCH TOTAL VOTES RECEIVED BY GIVEN POLL
+    #LIST2 CONTAINS TOTAL NUMBER OF VOTES SUBMITTED
     list2=db.execute("SELECT COUNT(option)AS total_votes FROM votes WHERE pollid=:pollid ",{'pollid':pollid}).fetchall()
     print_result=[x[0] for x in list1]
     print_totalvotes=[x[0] for x in list2]
     list3=[]
-    #CALCULATE VOTES PERCENTAGE
+    #CALCULATE PERCENTAGE OF VOTES EACH OPTION RECEIVED
     for x in print_result:
         ans=int((x/print_totalvotes[0])*100)
         list3.append(ans)
-    #IF NO VOTE IS GIVEN TO ANY OPTION
+    #SET 0 IF NO VOTES RECEIVED
     for x in range(0,2):
         list3.append(0)
     return list3
@@ -65,16 +59,19 @@ def result(pollid):
 
 
 #HOME PAGE
-@app.route("/")
+@epoller.route("/")
 @login_required
 def index():
-    session.clear()
-    return redirect("/login")
+    user = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
+    if len(user) != 0:
+        return render_template("index.html",user=user)
+    else:
+       return redirect("/login")
 
 
 
 #LOGIN PAGE
-@app.route("/login", methods=['GET', 'POST'])
+@epoller.route("/login", methods=['GET', 'POST'])
 def login():
     session.clear()
     if request.method == "GET":
@@ -88,19 +85,20 @@ def login():
         session["firstname"]=row[0]["firstname"]
         return redirect("/dashboard")
 
-#USER'S DASHBOARD
-@app.route("/dashboard")
+
+@epoller.route("/dashboard")
+@login_required
 def dashboard():
-    poll_total=db.execute("SELECT COUNT(*) FROM poll ").scalar()
-    poll_total_user=db.execute("SELECT COUNT(*)FROM poll WHERE user_id=:userid",{'userid':int(session["user_id"])}).scalar()
-    poll_ongoing=db.execute("SELECT COUNT(*) FROM poll WHERE ended =0 AND user_id=:userid",{'userid':int(session["user_id"])}).scalar()
-    poll_ended=poll_total_user-poll_ongoing
+    poll_total=db.execute("SELECT COUNT(*) FROM poll ").scalar() #TOTAL POLLS CREATED
+    poll_total_user=db.execute("SELECT COUNT(*)FROM poll WHERE user_id=:userid",{'userid':int(session["user_id"])}).scalar() #TOTAL POLLS CREATED BY CURRENT USER
+    poll_ongoing=db.execute("SELECT COUNT(*) FROM poll WHERE ended =0 AND user_id=:userid",{'userid':int(session["user_id"])}).scalar() #TOTAL ONGOING POLLS
+    poll_ended=poll_total_user-poll_ongoing #TOTAL ENDED POLLS
     return render_template("user.html",user=session["firstname"],poll_total=poll_total,poll_total_user=poll_total_user,poll_ongoing=poll_ongoing,poll_ended=poll_ended)
 
 
 
 #REGISTER USER
-@app.route("/register", methods=['GET', 'POST'])
+@epoller.route("/register", methods=['GET', 'POST'])
 def register():
     session.clear()
     if request.method == "POST":
@@ -119,7 +117,7 @@ def register():
             return render_template("register.html", message = "Username Already Exist")
         else:
             key = db.execute("INSERT INTO users (firstname, lastname, username, password) VALUES(:firstname, :lastname, :username, :password)",
-                  {'firstname': request.form.get("firstname"), 'lastname': request.form.get("lastname"), 'username': request.form.get("username").lower(),
+                  {'firstname': request.form.get("firstname"), 'lastname': request.form.get("lastname"), 'username': request.form.get("username"),
                    'password': generate_password_hash(request.form.get("password"), method='pbkdf2:sha256', salt_length=8)})
         row = db.execute("SELECT * FROM users WHERE username = :username", {'username': request.form.get("username")}).fetchall()
         session["user_id"] = row[0]["user_id"]
@@ -132,7 +130,8 @@ def register():
 
 
 #LOGOUT
-@app.route("/logout")
+@epoller.route("/logout")
+@login_required
 def logout():
     flash('We hope to see you again!')
     session.clear()
@@ -140,22 +139,22 @@ def logout():
 
 
 
-#CREATE POLL
-@app.route('/polls', methods=['GET','POST'])
+#POLLS
+@epoller.route('/polls', methods=['GET','POST'])
+@login_required
 def polls():
     poll_detail=db.execute("SELECT COUNT(*) FROM poll ").scalar()
-
     db.execute("INSERT INTO poll (pollid,question, option1,option2,option3,option4,user_id) VALUES(:pollid,:question, :option1,:option2,:option3,:option4,:user_id)",
                   {'pollid':poll_detail+1, 'question': request.form.get("question"), 'option1': request.form.get("option1"), 'option2': request.form.get("option2"),
                    'option3': request.form.get("option3"),'option4': request.form.get("option4"),'user_id':int(session["user_id"])})
     db.commit()
-
     return redirect("/pollscreated/ongoing")
 
 
 
-#CHECK OUT CREATED POLLS
-@app.route('/pollscreated/ongoing',methods=['GET','POST'])
+#POLLS created
+@epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
+@login_required
 def ongoingpolls():
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended =0 ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
     pollid=request.form.get("pollid")
@@ -173,8 +172,10 @@ def ongoingpolls():
             return render_template("/pollscreated.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result)
     return render_template("/pollscreated.html",user=session["firstname"],totalpolls=totalpolls,check=check)
 
-#CHECK OUT ENDED POLLS
-@app.route('/pollscreated/ended',methods=['GET','POST'])
+
+
+@epoller.route('/pollscreated/ended',methods=['GET','POST'])
+@login_required
 def endedpolls():
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended =1 ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
     if request.method=='POST':
@@ -185,7 +186,8 @@ def endedpolls():
 
 
 #VOTE FOR OTHER POLLS
-@app.route('/polltovote',methods=['GET','POST'])
+@epoller.route('/polltovote',methods=['GET','POST'])
+@login_required
 def polltovote():
     if request.method == 'GET':
         return redirect("/dashboard")
@@ -208,3 +210,7 @@ def polltovote():
         else:
             return render_template("polltovote.html",message="Not found",user=session["firstname"],hide=hide)
 
+
+#MAIN FUNCTION
+if __name__=='__main__':
+    epoller.run(debug=True)
