@@ -15,10 +15,10 @@ If you are not familiar with heroku , follow these steps:
 ## SET UP ENVIRONMENT VARIABLES
 
 ****DATABASE_URL****
-Set DATABASE_URL environment variable to the value of URI in your Heroku Credentials.
+:  Set DATABASE_URL environment variable to the value of URI in your Heroku Credentials.
 
 ****FLASK_APP****
-Set FLASK_APP environment variable to value "application.py"
+:  Set FLASK_APP environment variable to value "application.py"
 
 
 ## RUN THE APPLICATION
