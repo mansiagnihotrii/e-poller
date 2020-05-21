@@ -54,4 +54,4 @@ See also the list of [contributors](https://github.com/pyprogr/e-poller/graphs/c
 
 ## Acknowledgments
 
-This project was inspired by (https://github.com/danidee10/Votr/)
+This project was inspired by [Votr](https://github.com/danidee10/Votr/)
