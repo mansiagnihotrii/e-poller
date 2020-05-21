@@ -27,15 +27,15 @@ Set FLASK_APP environment variable to value "application.py"
 ## RUN THE APPLICATION
 1. Open cmd and navigate to your repository location.
 2. Type following command to install all the requirements. (Make sure you have python 3.0+ version installed)
-			```
+			```bash
 			>> pip install -r requirements.txt
 			```	
 3. Type following command to create tables in your database. (Make sure to set environment variables)
-			```
+			```bash
 			>> python import.py
 			```
 4. Lastly, type following command to run your application.
-			```
+			```bash
 			>> flask run
 			```
 **Navigate to your localhost address in your browser to see the application in action !!!!**
