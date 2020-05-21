@@ -35,8 +35,8 @@ Set FLASK_APP environment variable to value "application.py"
 **Navigate to your localhost address in your browser to see the application in action !!!!**
 
 ## GLIMPSE OF APPLICATION
-* [Homepage](/static/img/screenshot/homepage.png)
-* [Dashboard](/static/img/screenshot/dashboard.png)
+* [Homepage](/static/images/homepage.png)
+* [Dashboard](/static/images/dashboard.png)
 
 ## Built With
 
