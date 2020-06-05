@@ -12,10 +12,9 @@
       {% endblock %}
       {% block content %}
       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        {% block heading %}     {% endblock heading %}
+        {% block heading %}      <h1 class="h3 mb-0 text-gray-800">Ongoing Polls</h1> {% endblock heading %}
 
       </div>
-                <!-- Card Header - Dropdown -->
                 {% if totalpolls %}
                 {% for poll in totalpolls  %}
 
@@ -34,7 +33,9 @@
                 <div class="card-body">
                   <div class="chart-area">
 
-                {% block form  %}    <form >  {% endblock form %}
+                    {% block form %}    <form method="post" action="/pollscreated/ongoing">  {% endblock form %}
+
+
 
                             <input type="hidden" name="pollid" value='{{poll["pollid"]}}'>
                      <div class="form-group has-success">
@@ -58,7 +59,20 @@
                       </div>
                            {% endif %}
 
-                           {% block button %}{% endblock button %}
+                          {% if type%}
+
+                                                  {% if poll["pollid"] in check %}
+                                                  <h5 id="status"> Vote submitted !!!</h5>
+                                           <button class="btn btn-lg btn-success btn-block" id='{{ poll["pollid"]}}' type="submit" disabled>Vote</button>
+                                                  {% else %}
+                                            <button class="btn btn-lg btn-success btn-block" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
+                                                  {% endif %}
+
+                                                  <button class="btn btn-lg btn-success btn-block" id='result' type="submit" name="result">Result</button>
+                                          <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
+                                        {% else %}
+                              {% block button %}   {% endblock button %}
+                              {% endif %}
 
 
                     </form>
@@ -77,25 +91,25 @@
                 </div>
                 <div class="card-body">
 
-                  <h4 class="small font-weight-bold">{{poll["option1"]}} <span class="float-right"></span></h4>
+                  <h4 class="small font-weight-bold">{{poll["option1"]}} <span class="float-right" style = "color:#e74a3b">{{print_result[0]}}%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{print_result[0]}}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{print_result[0]}}%" ></div>
                   </div>
-                  <h4 class="small font-weight-bold">{{poll["option2"]}} <span class="float-right"></span></h4>
+                  <h4 class="small font-weight-bold">{{poll["option2"]}} <span class="float-right" style = "color:#f6c23e">{{print_result[1]}}%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{print_result[1]}}%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{print_result[1]}}%" ></div>
                   </div>
 
                   {% if poll["option3"] %}
-                  <h4 class="small font-weight-bold">{{poll["option3"]}} <span class="float-right"></span></h4>
+                  <h4 class="small font-weight-bold">{{poll["option3"]}} <span class="float-right" style="color: #4e73df">{{print_result[2]}}%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: {{print_result[2]}}%" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar" role="progressbar" style="width: {{print_result[2]}}%" "></div>
                   </div>
                   {% endif %}
                   {% if poll["option4"] %}
-                  <h4 class="small font-weight-bold">{{poll["option4"]}}<span class="float-right"></span></h4>
+                  <h4 class="small font-weight-bold">{{poll["option4"]}}<span class="float-right" style="color:#36b9cc">{{print_result[3]}}%</span></h4>
                   <div class="progress mb-4">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: {{print_result[2]}}%" aria-valuenow="{{print_result[3]}}%" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{print_result[3]}}%" ></div>
                   </div>
                     {% endif %}
                   </div>
