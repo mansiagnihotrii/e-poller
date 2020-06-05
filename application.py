@@ -40,21 +40,16 @@ def checkpoll():
 
 #FUNCTION TO RETURN RESULT OF A POLL
 def result(pollid):
+    result_dict = {1:0 , 2:0 , 3:0 , 4:0}
     #LIST1 CONTAINS VOTES EACH OPTION RECEIVED
-    list1=db.execute("SELECT COUNT(option)AS result FROM votes WHERE pollid=:pollid GROUP BY option ORDER BY option ASC",{'pollid':pollid}).fetchall()
+    list1=db.execute("SELECT COUNT(option) AS result, option FROM votes WHERE pollid=:pollid GROUP BY option ORDER BY option ASC",{'pollid':pollid}).fetchall()
     #LIST2 CONTAINS TOTAL NUMBER OF VOTES SUBMITTED
     list2=db.execute("SELECT COUNT(option)AS total_votes FROM votes WHERE pollid=:pollid ",{'pollid':pollid}).fetchall()
-    print_result=[x[0] for x in list1]
-    print_totalvotes=[x[0] for x in list2]
-    list3=[]
-    #CALCULATE PERCENTAGE OF VOTES EACH OPTION RECEIVED
-    for x in print_result:
-        ans=int((x/print_totalvotes[0])*100)
-        list3.append(ans)
-    #SET 0 IF NO VOTES RECEIVED
-    for x in range(0,2):
-        list3.append(0)
-    return list3
+    #CALCULATE PERCENTAGE OF VOTES EACH OPTION RECEIVED AND STORE IN THE RESULT
+    for item in range(len(list1)):
+        result_dict[list1[item]["option"]] = round((list1[item]["result"]/list2[0]["total_votes"])*100,2)
+    return list(result_dict.values())
+
 
 
 
@@ -156,6 +151,7 @@ def polls():
 @epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
 @login_required
 def ongoingpolls():
+    type = "created"
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended =0 ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
     pollid=request.form.get("pollid")
     check=checkpoll()
@@ -169,8 +165,8 @@ def ongoingpolls():
             voteforpoll(pollid,vote)
         elif 'result' in request.form:
             print_result=result(pollid)
-            return render_template("/pollscreated.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result)
-    return render_template("/pollscreated.html",user=session["firstname"],totalpolls=totalpolls,check=check)
+            return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,type=type)
+    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,type=type)
 
 
 
@@ -194,13 +190,13 @@ def polltovote():
     else:
         pollid=request.form.get("pollid")
         totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
-        if totalpolls[0]["user_id"]!= int(session["user_id"]):
-            hide=0
-        else:
-            hide=1
-        vote=request.form.get("vote")
-        if totalpolls != 0:
+        if len(totalpolls) != 0:
+            if totalpolls[0]["user_id"]!= int(session["user_id"]):
+                hide=0
+            else:
+                hide=1
             if 'voteforpoll' in request.form:
+                vote=request.form.get("vote")
                 voteforpoll(pollid,vote)
             elif 'result' in request.form:
                 print_result=result(pollid)
@@ -208,7 +204,7 @@ def polltovote():
             check=checkpoll()
             return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]))
         else:
-            return render_template("polltovote.html",message="Not found",user=session["firstname"],hide=hide)
+            return render_template("polltovote.html",message="Not found",user=session["firstname"])
 
 
 #MAIN FUNCTION
