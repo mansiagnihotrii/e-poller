@@ -152,7 +152,7 @@ def polls():
 @login_required
 def ongoingpolls():
     type = "created"
-    totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended =0 ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
+    totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user  ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
     pollid=request.form.get("pollid")
     check=checkpoll()
     if request.method=='POST':
