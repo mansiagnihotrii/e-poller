@@ -1,2 +1,2 @@
-web: gunicorn wsgi:app
+web gunicorn application:epoller
 
