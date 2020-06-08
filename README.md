@@ -2,6 +2,8 @@
 
 This online voting application (E-POLLER) is used to create polls online for people to vote. It runs using flask (python based web framework) primarily. It uses Heroku Postgres Database.
 
+## e-POLLER IN ACTION
+  [e-Poller!](https://epoller-app.herokuapp.com/)
 
 ### SET UP HEROKU POSTGRES DATABASE
 If you are not familiar with heroku , follow these steps:
@@ -45,6 +47,7 @@ Set FLASK_APP environment variable to value "application.py"
 ## GLIMPSE OF APPLICATION
 * [Homepage](/static/images/homepage.png)
 * [Dashboard](/static/images/dashboard.png)
+
 
 ## Built With
 
