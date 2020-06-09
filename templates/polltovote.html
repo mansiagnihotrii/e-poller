@@ -12,9 +12,9 @@
                    {% if end==0 %}
                       {% if poll["pollid"] in check %}
                       <h5 id="status"> Vote submitted !!!</h5>
-               <button class="btn btn-lg btn-success btn-block" id='{{ poll["pollid"]}}' type="submit" disabled>Vote</button>
+               <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" disabled>Vote</button>
                       {% else %}
-                <button class="btn btn-lg btn-success btn-block" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
+                <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
                       {% endif %}
                        <button class="btn btn-lg btn-success btn-block" id='result' type="submit" name="result">Result</button>
                         {% if hide == 1 %}
