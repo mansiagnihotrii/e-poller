@@ -40,7 +40,7 @@ def checkpoll():
 
 #FUNCTION TO RETURN RESULT OF A POLL
 def result(pollid):
-    result_dict = {1:0 , 2:0 , 3:0 , 4:0}
+    result_dict = {'1':0 , '2':0 , '3':0 , '4':0}
     #LIST1 CONTAINS VOTES EACH OPTION RECEIVED
     list1=db.execute("SELECT COUNT(option) AS result, option FROM votes WHERE pollid=:pollid GROUP BY option ORDER BY option ASC",{'pollid':pollid}).fetchall()
     #LIST2 CONTAINS TOTAL NUMBER OF VOTES SUBMITTED
@@ -49,8 +49,6 @@ def result(pollid):
     for item in range(len(list1)):
         result_dict[list1[item]["option"]] = round((list1[item]["result"]/list2[0]["total_votes"])*100,2)
     return list(result_dict.values())
-
-
 
 
 #HOME PAGE
@@ -152,14 +150,14 @@ def polls():
 @login_required
 def ongoingpolls():
     type = "created"
-    totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user  ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
+    totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended=0  ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
     pollid=request.form.get("pollid")
     check=checkpoll()
     if request.method=='POST':
         if 'end' in request.form:
             db.execute("UPDATE poll SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
             db.commit()
-            return redirect("/pollscreated/ongoing")
+            return redirect("/pollscreated/ended")
         elif 'voteforpoll' in request.form:
             vote=request.form.get("vote")
             voteforpoll(pollid,vote)
@@ -210,5 +208,3 @@ def polltovote():
 #MAIN FUNCTION
 if __name__=='__main__':
     epoller.run(debug=True)
-
-
