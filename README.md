@@ -62,9 +62,9 @@ You can contribute by sending pull requests to the code.
 
 ## Authors
 
-* **Mansi Agnihotri** - (https://github.com/pyprogr)
+* **Mansi Agnihotri** - (https://github.com/mansiagnihotrii)
 
-See also the list of [contributors](https://github.com/pyprogr/e-poller/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/mansiagnihotrii/e-poller/graphs/contributors) who participated in this project.
 
 
 ## Acknowledgments
