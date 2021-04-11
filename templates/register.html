@@ -30,6 +30,12 @@
 
         <form class="form-signin" method="post" action="{{ url_for('register') }}">
         <h2 class="form-signin-heading" align="center">Sign up</h2>
+		
+	<div class="form-control">
+                <label class="header">Profile Photo:</label>
+                
+                <input id="image" type="file" name="profile_photo" placeholder="Photo" required="" capture>
+            </div>
 
 	<div class="form-group has-success">
           <label for="firstname" class="sr-only">First Name</label>
