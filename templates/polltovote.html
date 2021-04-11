@@ -4,7 +4,7 @@
                  {% block heading %}      <h1 class="h3 mb-0 text-gray-800">Vote for poll</h1> {% endblock heading %}
 
 
-           {% block form %}    <form method="post" action="/polltovote">  {% endblock form %}
+           {% block form %}    <form method="post" action="{{ url_for('search',pollid=totalpolls[0]["pollid"] ) }}">  {% endblock form %}
                      {% block button %}
 
                      {% if totalpolls %}

@@ -79,6 +79,7 @@ def login():
         return redirect("/dashboard")
 
 
+#DASHBOARD
 @epoller.route("/dashboard")
 @login_required
 def dashboard():
@@ -137,15 +138,19 @@ def logout():
 @login_required
 def polls():
     poll_detail=db.execute("SELECT COUNT(*) FROM poll ").scalar()
-    db.execute("INSERT INTO poll (pollid,question, option1,option2,option3,option4,user_id) VALUES(:pollid,:question, :option1,:option2,:option3,:option4,:user_id)",
-                  {'pollid':poll_detail+1, 'question': request.form.get("question"), 'option1': request.form.get("option1"), 'option2': request.form.get("option2"),
-                   'option3': request.form.get("option3"),'option4': request.form.get("option4"),'user_id':int(session["user_id"])})
+    db.execute("INSERT INTO poll (pollid,question,user_id) VALUES(:pollid,:question, :user_id)",
+                  {'pollid':poll_detail+1, 'question': request.form.get("question"), 'user_id':int(session["user_id"])})
+                  
+    temp = request.form.getlist("option")
+    for name in temp:   
+      db.execute("INSERT INTO option (pollid,name) VALUES(:pollid,:name)",
+                  {'pollid':poll_detail+1, 'name': name})         
     db.commit()
     return redirect("/pollscreated/ongoing")
 
 
 
-#POLLS created
+#CREATED POLLS
 @epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
 @login_required
 def ongoingpolls():
@@ -168,6 +173,7 @@ def ongoingpolls():
 
 
 
+#ENDED POLLS
 @epoller.route('/pollscreated/ended',methods=['GET','POST'])
 @login_required
 def endedpolls():
@@ -177,7 +183,6 @@ def endedpolls():
         print_result=result(pollid)
         return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
     return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls)
-
 
 
 #VOTE FOR OTHER POLLS
@@ -193,7 +198,7 @@ def polltovote():
         
 
 #VOTE FOR OTHER POLLS        
-@epoller.route('/search/<int:pollid>')
+@epoller.route('/search/<int:pollid>',methods=['GET','POST'])
 @login_required
 def search(pollid):
     totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
@@ -207,14 +212,17 @@ def search(pollid):
             voteforpoll(pollid,vote)
         elif 'result' in request.form:
             print_result=result(pollid)
-            return render_template("/polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
+            return render_template("polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
         check=checkpoll()
         return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]))
     else:
         return render_template("polltovote.html",message="Not found",user=session["firstname"])
 
 
-
 #MAIN FUNCTION
 if __name__=='__main__':
     epoller.run(debug=True)
+    
+    
+    
+
