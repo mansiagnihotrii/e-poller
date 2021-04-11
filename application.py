@@ -179,30 +179,40 @@ def endedpolls():
     return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls)
 
 
+
 #VOTE FOR OTHER POLLS
 @epoller.route('/polltovote',methods=['GET','POST'])
 @login_required
 def polltovote():
     if request.method == 'GET':
         return redirect("/dashboard")
-    else:
+    else:   		
         pollid=request.form.get("pollid")
-        totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
-        if len(totalpolls) != 0:
-            if totalpolls[0]["user_id"]!= int(session["user_id"]):
-                hide=0
-            else:
-                hide=1
-            if 'voteforpoll' in request.form:
-                vote=request.form.get("vote")
-                voteforpoll(pollid,vote)
-            elif 'result' in request.form:
-                print_result=result(pollid)
-                return render_template("/polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
-            check=checkpoll()
-            return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]))
+        return redirect(url_for('search', pollid=pollid)) 
+        
+        
+
+#VOTE FOR OTHER POLLS        
+@epoller.route('/search/<int:pollid>')
+@login_required
+def search(pollid):
+    totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
+    if len(totalpolls) != 0:
+        if totalpolls[0]["user_id"]!= int(session["user_id"]):
+            hide=0
         else:
-            return render_template("polltovote.html",message="Not found",user=session["firstname"])
+            hide=1
+        if 'voteforpoll' in request.form:
+            vote=request.form.get("vote")
+            voteforpoll(pollid,vote)
+        elif 'result' in request.form:
+            print_result=result(pollid)
+            return render_template("/polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
+        check=checkpoll()
+        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]))
+    else:
+        return render_template("polltovote.html",message="Not found",user=session["firstname"])
+
 
 
 #MAIN FUNCTION
