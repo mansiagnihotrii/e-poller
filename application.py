@@ -143,8 +143,8 @@ def polls():
                   
     temp = request.form.getlist("option")
     for name in temp:   
-      db.execute("INSERT INTO option (pollid,name) VALUES(:pollid,:name)",
-                  {'pollid':poll_detail+1, 'name': name})         
+      db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
+                  {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
     db.commit()
     return redirect("/pollscreated/ongoing")
 
@@ -156,7 +156,9 @@ def polls():
 def ongoingpolls():
     type = "created"
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended=0  ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
+    options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
     pollid=request.form.get("pollid")
+    
     check=checkpoll()
     if request.method=='POST':
         if 'end' in request.form:
@@ -168,8 +170,8 @@ def ongoingpolls():
             voteforpoll(pollid,vote)
         elif 'result' in request.form:
             print_result=result(pollid)
-            return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,type=type)
-    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,type=type)
+            return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,options=options,type=type)
+    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,options=options,type=type)
 
 
 
@@ -178,11 +180,12 @@ def ongoingpolls():
 @login_required
 def endedpolls():
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended =1 ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
+    options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
     if request.method=='POST':
         pollid=request.form.get("pollid")
         print_result=result(pollid)
-        return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
-    return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls)
+        return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options)
+    return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options)
 
 
 #VOTE FOR OTHER POLLS
@@ -202,6 +205,7 @@ def polltovote():
 @login_required
 def search(pollid):
     totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
+    options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
     if len(totalpolls) != 0:
         if totalpolls[0]["user_id"]!= int(session["user_id"]):
             hide=0
@@ -212,9 +216,9 @@ def search(pollid):
             voteforpoll(pollid,vote)
         elif 'result' in request.form:
             print_result=result(pollid)
-            return render_template("polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result)
+            return render_template("polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options)
         check=checkpoll()
-        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]))
+        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"],options=options))
     else:
         return render_template("polltovote.html",message="Not found",user=session["firstname"])
 

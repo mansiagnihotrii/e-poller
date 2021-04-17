@@ -1,0 +1,34 @@
+
+
+#container {
+overflow:hidden;
+position:relative;
+z-index: 1;
+}
+#c {
+z-index:0;
+background:#010222;
+background: 
+}
+#over_stuff{
+color:gold;
+z-index:5;
+display:block;
+margin: auto;
+width: 50%;
+padding: 10px;
+position:absolute;
+text-align:center !important;
+}
+
+.form-signin{
+background: rgba(0, 0, 0, 0.5);
+}
+#extra{
+position:relative;
+
+top:0px;
+left:0px;
+
+padding:10px;}
+

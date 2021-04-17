@@ -10,20 +10,26 @@
     <link rel="icon" href="https://img.icons8.com/nolan/64/survey.png">
 
     <title>Register To e-Poller!</title>
-
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 
        <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet" />
+        <script src="{{ url_for('static', filename='js/ie-emulation-modes-warning.js') }}"></script>
 
-    <script src="{{ url_for('static', filename='js/ie-emulation-modes-warning.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/rainbow.css') }}" rel="stylesheet" />
+
+
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
   </head>
 
   <body>
 
-    <div class="container">
+ <div id="container">
+<div id="over_stuff">
+
 {% if message %}
         <h3>{{ message }}</h3>
       {% endif %}
@@ -64,7 +70,10 @@
         <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
       </form>
 
-    </div>
-
+  
+</div>
+<canvas id="c"></canvas>
+</div>
+    <script src="{{ url_for('static', filename='js/rainbow.js') }}"></script>
   </body>
 </html>

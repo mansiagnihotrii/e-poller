@@ -49,16 +49,36 @@
       <li class="nav-item active">
               <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fas fa-poll"></i>
-                <span>Polls created</span>
+                <span>Polls </span>
               </a>
               <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/pollscreated/ongoing">Create Poll</a>
                   <a class="collapse-item" href="/pollscreated/ongoing">Ongoing Polls</a>
                   <a class="collapse-item" href="/pollscreated/ended">Ended Polls</a>
                 </div>
               </div>
             </li>
 
+
+      <li class="nav-item active">
+        	<a class="nav-link" href="#">
+          	<i class="fas fa-user"></i>
+          	<span>Profile</span></a>
+      </li>
+      
+      <li class="nav-item active">
+        	<a class="nav-link" href="#">
+          	<i class="fas fa-question-circle"></i>
+          	<span>FAQs</span></a>
+      </li>
+      
+       <li class="nav-item active">
+        	<a class="nav-link" href="#">
+          	<i class="fas fa-file-signature"></i>
+          	<span>Contact Us</span></a>
+      </li>
+      
       <li class="nav-item active">
         	<a class="nav-link" href="/logout">
           	<i class="fas fa-sign-out-alt"></i>
@@ -130,6 +150,9 @@
    <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
    <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
    <script src = "{{ url_for("static", filename ="js/option.js") }}"></script>
+     <script src='https://code.createjs.com/easeljs-0.7.1.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+   <script src = "{{ url_for("static", filename ="js/dashboard.js") }}"></script>
 
 </body>
 </html>

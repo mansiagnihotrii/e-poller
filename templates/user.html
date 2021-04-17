@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block title %} DASHBOARD {% endblock %}
 {%block head%}
+  <link href="/static/css/dashboaJHrd.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
        {% endblock %}
 
 
@@ -11,7 +13,10 @@
      <!-- Begin Page Content -->
 
 
-       <!-- Page Heading -->
+       <!-- Page Heading 
+       <div id="containerr">
+<div id="over_stuff">
+-->
        <div class="d-sm-flex align-items-center justify-content-between mb-4">
          <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 
@@ -30,7 +35,9 @@
                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_total_user}}</div>
                  </div>
                  <div class="col-auto">
-                   <i class="fas fa-poll fa-2x text-gray-300"></i>
+                   <span style="font-size:2em;color:#4e73df;">
+                   <i class="fa fa-poll"></i>
+    							</span>
                  </div>
                </div>
              </div>
@@ -47,7 +54,9 @@
                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_ongoing}}</div>
                  </div>
                  <div class="col-auto">
-                   <i class="fas fa-clock fa-2x text-gray-300"></i>
+                   <span style="font-size:2em;color:#f6c23e;">
+                   <i class="fa fa-clock"></i>
+    </span>
                  </div>
                </div>
              </div>
@@ -68,7 +77,9 @@
                      </div>
                  </div>
                  <div class="col-auto">
-                   <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                   <span style="font-size:2em;color:#36b9cc;">
+                   <i class="fa fa-check-circle"></i>
+    </span>
                  </div>
                </div>
              </div>
@@ -111,5 +122,9 @@
          <button class="btn btn-lg btn-success btn-block" type="submit" >Submit Poll</button>
        </form>
 
-    
+<!--
+</div>
+
+<canvas id="projector">Your browser does not support the Canvas element.</canvas>
+</div>-->
 {% endblock %}
