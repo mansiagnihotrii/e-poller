@@ -134,21 +134,22 @@ def logout():
 
 
 #POLLS
-@epoller.route('/polls', methods=['GET','POST'])
+@epoller.route('/createpoll', methods=['GET','POST'])
 @login_required
 def polls():
-    poll_detail=db.execute("SELECT COUNT(*) FROM poll ").scalar()
-    db.execute("INSERT INTO poll (pollid,question,user_id) VALUES(:pollid,:question, :user_id)",
-                  {'pollid':poll_detail+1, 'question': request.form.get("question"), 'user_id':int(session["user_id"])})
+    poll_total=db.execute("SELECT COUNT(*) FROM poll ").scalar() #TOTAL POLLS CREATED
+    if request.method=="POST":
+        poll_detail=db.execute("SELECT COUNT(*) FROM poll ").scalar()
+        db.execute("INSERT INTO poll (pollid,question,user_id) VALUES(:pollid,:question, :user_id)",
+                      {'pollid':poll_detail+1, 'question': request.form.get("question"), 'user_id':int(session["user_id"])})
                   
-    temp = request.form.getlist("option")
-    for name in temp:   
-      db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
-                  {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
-    db.commit()
-    return redirect("/pollscreated/ongoing")
-
-
+        temp = request.form.getlist("option")
+        for name in temp:   
+          db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
+                      {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
+        db.commit()
+        return redirect("/pollscreated/ongoing")
+    return render_template("create_poll.html",poll_total=poll_total)
 
 #CREATED POLLS
 @epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
