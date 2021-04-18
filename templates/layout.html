@@ -62,7 +62,7 @@
 
 
       <li class="nav-item active">
-        	<a class="nav-link" href="#">
+        	<a class="nav-link" href="/profile">
           	<i class="fas fa-user"></i>
           	<span>Profile</span></a>
       </li>
@@ -147,12 +147,15 @@
 </footer>
 </div>
 </div>
+
    <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
    <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
    <script src = "{{ url_for("static", filename ="js/option.js") }}"></script>
      <script src='https://code.createjs.com/easeljs-0.7.1.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
    <script src = "{{ url_for("static", filename ="js/dashboard.js") }}"></script>
-
+   <script src="{{ url_for("static", filename="js/material-dashboard.js") }}"></script>
+      <script src="{{ url_for("static", filename="js/popper.min.js") }}"></script>
+         <script src="{{ url_for("static", filename="js/bootstrap-material-design.min.js") }}"></script>
 </body>
 </html>

@@ -132,6 +132,13 @@ def logout():
     return redirect("/")
 
 
+#PROFILE
+@epoller.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html")
+
+
 
 #POLLS
 @epoller.route('/createpoll', methods=['GET','POST'])
