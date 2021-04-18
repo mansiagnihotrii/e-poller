@@ -102,6 +102,10 @@ def register():
             return render_template("register.html", message="LastName Missing")
         if not request.form.get("username"):
             return render_template("register.html", message = "Username Missing")
+        if not request.form.get("email"):
+            return render_template("register.html", message="Email Missing")
+        if not request.form.get("aadhar"):
+            return render_template("register.html", message="Aadhar ID Missing")
         if not request.form.get("password"):
             return render_template("register.html", message="Password Missing")
         if request.form.get("password") !=  request.form.get("confirmation"):
@@ -110,8 +114,8 @@ def register():
         if len(row) != 0:
             return render_template("register.html", message = "Username Already Exist")
         else:
-            key = db.execute("INSERT INTO users (firstname, lastname, username, password) VALUES(:firstname, :lastname, :username, :password)",
-                  {'firstname': request.form.get("firstname"), 'lastname': request.form.get("lastname"), 'username': request.form.get("username"),
+            key = db.execute("INSERT INTO users (firstname, lastname, username, email,password) VALUES(:firstname, :lastname, :username, :email, :password)",
+                  {'firstname': request.form.get("firstname"), 'lastname': request.form.get("lastname"), 'username': request.form.get("username"), 'email':request.form.get("email"),
                    'password': generate_password_hash(request.form.get("password"), method='pbkdf2:sha256', salt_length=8)})
         row = db.execute("SELECT * FROM users WHERE username = :username", {'username': request.form.get("username")}).fetchall()
         session["user_id"] = row[0]["user_id"]
@@ -133,10 +137,39 @@ def logout():
 
 
 #PROFILE
-@epoller.route("/profile")
+@epoller.route("/profile",methods=['GET','POST'])
 @login_required
 def profile():
-    return render_template("profile.html")
+    details = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
+    if request.method == "GET":
+        return render_template("profile.html",details = details,user=session["firstname"])
+    username = request.form.get("username")
+    firstname = request.form.get("firstname")
+    lastname = request.form.get("lastname")
+    email = request.form.get("email")
+    
+    if not username:
+        username = details[0]["username"]
+    if not firstname:
+        firstname = details[0]["firstname"]
+    if not lastname:
+        lastname = details[0]["lastname"]
+    if not email:
+        email = details[0]["email"]   
+    if request.form.get("oldpassword"):
+        if not check_password_hash(details[0]["password"], request.form.get("oldpassword")):
+            return render_template('profile.html',message = "Old password doesn't match",user=session["firstname"],color="danger",details=details)
+        if not request.form.get("newpassword") == request.form.get("renewpassword"):
+            return render_template('profile.html',message = "New passwords doesn't match",user=session["firstname"],color="danger",details=details)
+        db.execute("UPDATE users SET password =:password",{'password': generate_password_hash(request.form.get("newpassword"), method='pbkdf2:sha256', salt_length=8)})
+        return render_template('profile.html',message = "Password Updated Successfully !",user=session["firstname"],color="success",details=details)
+                  
+    db.execute("UPDATE users SET username =:username,firstname=:firstname, lastname=:lastname, email=:email",
+                  {'username':username,'firstname':firstname,'lastname':lastname,'email':email})
+    db.commit()
+    details = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
+    return render_template('profile.html',message = "Profile updated Succesfully",details = details,user=session["firstname"],color="success")              
+
 
 
 
