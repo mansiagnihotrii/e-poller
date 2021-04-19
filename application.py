@@ -278,8 +278,14 @@ def contact():
     
     db.execute("INSERT INTO contact(firstname,lastname,email,message) VALUES(:firstname,:lastname,:email,:message)",{'firstname':firstname,'lastname':lastname,'email':email,'message':message})
     db.commit()
-    return render_template("contact.html",message = "Message sent successfully !")        
+    return render_template("contact.html",user=session["firstname"],message = "Message sent successfully !")        
 
+
+#FAQ
+@epoller.route('/faq')
+@login_required
+def faq():
+    return render_template("faq.html",user=session["firstname"]) 
 
 #MAIN FUNCTION
 if __name__=='__main__':
