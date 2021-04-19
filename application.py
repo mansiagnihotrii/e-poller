@@ -271,14 +271,16 @@ def search(pollid):
 def contact():
     if request.method == 'GET':
         return render_template("contact.html",user=session["firstname"])
-    #else:   		
-        #pollid=request.form.get("pollid")
-        #return redirect(url_for('search', pollid=pollid))
+    firstname = request.form.get("firstname")
+    lastname = request.form.get("lastname")
+    email = request.form.get("email")
+    message = request.form.get("message")
+    
+    db.execute("INSERT INTO contact(firstname,lastname,email,message) VALUES(:firstname,:lastname,:email,:message)",{'firstname':firstname,'lastname':lastname,'email':email,'message':message})
+    db.commit()
+    return render_template("contact.html",message = "Message sent successfully !")        
+
 
 #MAIN FUNCTION
 if __name__=='__main__':
     epoller.run(debug=True)
-    
-    
-    
-

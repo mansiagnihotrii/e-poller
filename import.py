@@ -20,6 +20,9 @@ def main():
     
     #TABLE TO STORE VOTES INFORMATION
     db.execute("CREATE TABLE votes (pollid INTEGER NOT NULL REFERENCES poll(pollid),user_id INTEGER NOT NULL REFERENCES users(user_id),option VARCHAR NOT NULL)")
+    
+    #TABLE TO STORE MESSAGES RECEIVED FROM USER
+    db.execute("CREATE TABLE contact (firstname VARCHAR NOT NULL,lastname VARCHAR NOT NULL,message VARCHAR NOT NULL,email VARCHAR NOT NULL)")
     db.commit()
 
 if __name__ == "__main__":
