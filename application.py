@@ -161,12 +161,12 @@ def profile():
             return render_template('profile.html',message = "Old password doesn't match",user=session["firstname"],color="danger",details=details)
         if not request.form.get("newpassword") == request.form.get("renewpassword"):
             return render_template('profile.html',message = "New passwords doesn't match",user=session["firstname"],color="danger",details=details)
-        db.execute("UPDATE users SET password =:password",{'password': generate_password_hash(request.form.get("newpassword"), method='pbkdf2:sha256', salt_length=8)})
+        db.execute("UPDATE users SET password =:password WHERE user_id=:user",{'password': generate_password_hash(request.form.get("newpassword"), method='pbkdf2:sha256', salt_length=8),'user': int(session["user_id"])})
         db.commit()
         return render_template('profile.html',message = "Password Updated Successfully !",user=session["firstname"],color="success",details=details)
                   
-    db.execute("UPDATE users SET username =:username,firstname=:firstname, lastname=:lastname, email=:email",
-                  {'username':username,'firstname':firstname,'lastname':lastname,'email':email})
+    db.execute("UPDATE users SET username =:username,firstname=:firstname, lastname=:lastname, email=:email WHERE user_id=:user",
+                  {'username':username,'firstname':firstname,'lastname':lastname,'email':email,'user': int(session["user_id"])})
     db.commit()
     details = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
     return render_template('profile.html',message = "Profile updated Succesfully",details = details,user=session["firstname"],color="success")              
