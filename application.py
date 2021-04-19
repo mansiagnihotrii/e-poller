@@ -114,8 +114,8 @@ def register():
         if len(row) != 0:
             return render_template("register.html", message = "Username Already Exist")
         else:
-            key = db.execute("INSERT INTO users (firstname, lastname, username, email,password) VALUES(:firstname, :lastname, :username, :email, :password)",
-                  {'firstname': request.form.get("firstname"), 'lastname': request.form.get("lastname"), 'username': request.form.get("username"), 'email':request.form.get("email"),
+            key = db.execute("INSERT INTO users (firstname, lastname, username, email,aadhar,password) VALUES(:firstname, :lastname, :username, :email,:aadhar, :password)",
+                  {'firstname': request.form.get("firstname"), 'lastname': request.form.get("lastname"), 'username': request.form.get("username"), 'email':request.form.get("email"),'aadhar':request.form.get("aadhar"),
                    'password': generate_password_hash(request.form.get("password"), method='pbkdf2:sha256', salt_length=8)})
         row = db.execute("SELECT * FROM users WHERE username = :username", {'username': request.form.get("username")}).fetchall()
         session["user_id"] = row[0]["user_id"]
@@ -264,6 +264,16 @@ def search(pollid):
     else:
         return render_template("polltovote.html",message="Not found",user=session["firstname"])
 
+
+#CONTACT PAGE
+@epoller.route('/contact',methods=['GET','POST'])
+@login_required
+def contact():
+    if request.method == 'GET':
+        return render_template("contact.html",user=session["firstname"])
+    #else:   		
+        #pollid=request.form.get("pollid")
+        #return redirect(url_for('search', pollid=pollid))
 
 #MAIN FUNCTION
 if __name__=='__main__':
