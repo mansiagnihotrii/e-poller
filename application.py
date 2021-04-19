@@ -162,6 +162,7 @@ def profile():
         if not request.form.get("newpassword") == request.form.get("renewpassword"):
             return render_template('profile.html',message = "New passwords doesn't match",user=session["firstname"],color="danger",details=details)
         db.execute("UPDATE users SET password =:password",{'password': generate_password_hash(request.form.get("newpassword"), method='pbkdf2:sha256', salt_length=8)})
+        db.commit()
         return render_template('profile.html',message = "Password Updated Successfully !",user=session["firstname"],color="success",details=details)
                   
     db.execute("UPDATE users SET username =:username,firstname=:firstname, lastname=:lastname, email=:email",
