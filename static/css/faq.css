@@ -5,6 +5,11 @@
 *::before, *::after {
   box-sizing: border-box;
 }
+@media only screen and (max-width: 450px){
+.contact-image h2{
+font-size:1.3rem !important;
+}
+}
 
   .contact-form{
       text-align: center;
@@ -23,12 +28,13 @@
 .contact-image h2{
     color:white;
     padding:10px;
+
 }
 
 .container {
   margin: 0 auto;
-  padding: 4rem;
-  width: 48rem;
+  padding: 6%;
+  width: 70%;
 }
 
 .accordion .accordion-item {
