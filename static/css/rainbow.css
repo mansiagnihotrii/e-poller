@@ -1,7 +1,126 @@
 
+.signup-container {
+  display: grid;
+  grid-template-areas: "left right";
+  max-width: 900px;
+  transform: translate(30%,20%);
+}
+
+.left-container {
+  padding-right: 20px;
+  position: relative;
+  text-align: center;
+  width: 350px;
+}
+
+.left-container img {
+  width: 100%;
+  height: 100%;
+}
+
+.right-container {
+  background: rgba(0,0,0,0.5);
+  display: grid;
+  grid-template-areas: "." ".";
+  width: 500px;
+}
+.right-container h1:nth-of-type(1) {
+  color: rgba(255, 255, 255);
+  font-size: 28px;
+  font-weight: 600;
+}
+.right-container .set {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  text-align: center;
+}
+.right-container input {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  height: 38px;
+  line-height: 38px;
+  padding-left: 5px;
+}
+.right-container label {
+   color: rgba(255, 255, 255, 0.8);
+}
+.right-container header {
+  padding: 40px 40px 0px 40px;
+}
+.right-container label, .right-container input{
+  width: 176px;
+  text-align: center;
+}
+
+.right-container footer {
+  align-items: center;
+  background: (0,0,0,0.5)
+  display: grid;
+  padding: 5px 40px;
+}
+.right-container footer input {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  height: 38px;
+  line-height: 38px;
+
+  border-radius: 19px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.right-container footer #next {
+  background: linear-gradient(90deg,#224abe 10%,#191818 100%);
+  border: 1px solid #224abe;
+  color: #fff;
+  margin: 0 auto;
+}
+.right-container footer #next:hover {
+  background: #224abe;
+}
+
+.firstname label, .lastname label, .email label, .aadhar label, .password label,.username label{
+  display: block;
+  margin-bottom: 5px;
+}
+.aadhar{
+padding-left:100px;}
+.col-container {
+  display: table;
+  width: 100%;
+}
+.col {
+  display: table-cell;
+  padding: 16px;
+}
+
+    
+a,
+[type=submit] {
+  transition: all 0.25s ease-in;
+}
+
+
+
+h1,
+h2 {
+  font-weight: 300;
+  color: white;
+}
+
+label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #ccc;
+}
+
+    img{
+        max-width: 100%;
+        max-height: 100%;
+        display: block; /* remove extra space below image */
+    }
 
 #container {
-overflow:hidden;
+
 position:relative;
 z-index: 1;
 }
@@ -11,7 +130,7 @@ background:#010222;
 background: 
 }
 #over_stuff{
-color:gold;
+
 z-index:5;
 display:block;
 margin: auto;

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link href="//db.onlinewebfonts.com/c/c144af7d488f9069913d40dee3cd1f70?family=Algerian" rel="stylesheet" type="text/css"/> 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,21 +9,13 @@
     <meta name="author" content="">
     <link rel="icon" href="https://img.icons8.com/nolan/64/survey.png">
 		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@800&display=swap" rel="stylesheet">
     <title>Register To e-Poller !</title>
-    		<!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
-       <!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet" />
-    <script src="{{ url_for('static', filename='js/ie-emulation-modes-warning.js') }}"></script>
-
     <link href="{{ url_for('static', filename='css/rainbow.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/register.css') }}" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css'>
 
 
- 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
   </head>
 
   <body>
@@ -33,53 +24,73 @@
 <div id="over_stuff">
 
 {% if message %}
-        <h3>{{ message }}</h3>
-      {% endif %}
+  <h3>{{ message }}</h3>
+{% endif %}
 
-        <form class="form-signin" method="post" action="{{ url_for('register') }}">
-        <h2 class="form-signin-heading" align="center">Sign up</h2>
-
-	<div class="form-group has-success">
-          <label for="firstname" class="sr-only">First Name</label>
-          <input type="firstname" id="firstname" name="firstname" class="form-control" placeholder="First Name" required autofocus>
+<div class='signup-container'>
+  <div class='left-container'>
+    
+   
+    <img src="../static/images/registertag.png" >
+ 
+  </div>
+  <div class='right-container'>
+<header>
+      <h1><u>Register</u></h1>
+ <form method="post" action="{{ url_for('register') }}">
+      <div class="set">
+        <div class="firstname">
+          <label for="firstname">First Name</label>
+          <input name="firstname" id="firstname" placeholder="First Name" type="text" required>
         </div>
-
-	<div class="form-group has-success">
-          <label for="lastname" class="sr-only">Last Name</label>
-          <input type="lastname" id="lastname" name="lastname" class="form-control" placeholder="Last Name" required autofocus>
+<div class="lastname">
+          <label for="lastname">Last Name</label>
+          <input name="lastname" id="lastname" placeholder="Last Name" type="text" required>
         </div>
-
-
-        <div class="form-group has-success">
-          <label for="email" class="sr-only">Email address</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required autofocus>
+      </div>
+      <div class="set">
+        <div class="username">
+          <label for="username">Username</label>
+          <input name="username" id="username" placeholder="Username" type="text" required>
         </div>
-        
-          <div class="form-group has-success">
-          <label for="aadhar" class="sr-only">Aadhar ID</label>
-          <input type="text" id="aadhar" name="aadhar" class="form-control" placeholder="Aadhar ID" minlength="12" maxlength="12" required autofocus>
+        <div class="email">
+          <label for="email">Email Address</label>
+          <input name="email" id="email" placeholder="Email Address" type="email" required>
         </div>
-
-        <div class="form-group has-success">
-          <label for="username" class="sr-only">Username</label>
-          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+      </div>
+            <div class="set">
+        <div class="aadhar">
+          <label for="aadhar">Aadhar ID</label>
+          <input name="aadhar" id="aadhar" placeholder="Aadhar ID" type="text" minlength="12" maxlength="12" required>
         </div>
-
-        <div class="form-group has-success">
-          <label for="password" class="sr-only">Password</label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </div>  
-
-	<div class="form-group has-success">
-          <label for="password" class="sr-only">Password</label>
-          <input type="password" id="password" name="confirmation" class="form-control" placeholder="Re-Password" required>
-        </div>  
-        <button class="btn btn-lg btn-success btn-block" type="submit">Sign up</button>
-      </form>
 </div>
-<div id="tag">
-<img style="width:50%;"src="{{ url_for("static", filename="images/registertag.png") }}" />
+   
+          <div class="set">
+        <div class="password">
+          <label for="password">Password</label>
+          <input name="password" id="password" placeholder="Password" type="password" required>
+        </div>
+        <div class="password">
+          <label for="password">Repeat Password</label>
+          <input name="confirmation" id="password" placeholder="Repeat Password" type="password" required>
+        </div>
+      </div>
+       <footer>
+       <div class='set'>
+        <input id="next" type="submit" value="Register" />
+      
+      </div>
+        </footer>
+    </form>
+    </header>
+   
+     
+  
+  </div>
 </div>
+
+</div>
+
 <canvas id="c"></canvas>
 </div>
     <script src="{{ url_for('static', filename='js/rainbow.js') }}"></script>
