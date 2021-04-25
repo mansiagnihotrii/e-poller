@@ -72,11 +72,10 @@ def login():
     else:
         row = db.execute("SELECT * FROM users WHERE username = :username", {'username': request.form.get("username")}).fetchall()
         if len(row) != 1  or not check_password_hash(row[0]["password"], request.form.get("password")):
-            flash("Invalid username/password")
-            return render_template("index.html")
+            return render_template("index.html",message = "Invalid username/password")
         session["user_id"] = row[0]["user_id"]
         session["firstname"]=row[0]["firstname"]
-        return redirect("/dashboard")
+        return redirect("/dashboard",name='dashboard')
 
 
 #DASHBOARD
@@ -87,7 +86,7 @@ def dashboard():
     poll_total_user=db.execute("SELECT COUNT(*)FROM poll WHERE user_id=:userid",{'userid':int(session["user_id"])}).scalar() #TOTAL POLLS CREATED BY CURRENT USER
     poll_ongoing=db.execute("SELECT COUNT(*) FROM poll WHERE ended =0 AND user_id=:userid",{'userid':int(session["user_id"])}).scalar() #TOTAL ONGOING POLLS
     poll_ended=poll_total_user-poll_ongoing #TOTAL ENDED POLLS
-    return render_template("user.html",user=session["firstname"],poll_total=poll_total,poll_total_user=poll_total_user,poll_ongoing=poll_ongoing,poll_ended=poll_ended)
+    return render_template("user.html",user=session["firstname"],poll_total=poll_total,poll_total_user=poll_total_user,poll_ongoing=poll_ongoing,poll_ended=poll_ended,name='dashboard')
 
 
 
@@ -142,7 +141,7 @@ def logout():
 def profile():
     details = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
     if request.method == "GET":
-        return render_template("profile.html",details = details,user=session["firstname"])
+        return render_template("profile.html",details = details,user=session["firstname"],name='profile')
     username = request.form.get("username")
     firstname = request.form.get("firstname")
     lastname = request.form.get("lastname")
@@ -158,18 +157,18 @@ def profile():
         email = details[0]["email"]   
     if request.form.get("oldpassword"):
         if not check_password_hash(details[0]["password"], request.form.get("oldpassword")):
-            return render_template('profile.html',message = "Old password doesn't match",user=session["firstname"],color="danger",details=details)
+            return render_template('profile.html',message = "Old password doesn't match",user=session["firstname"],color="danger",details=details,name='profile')
         if not request.form.get("newpassword") == request.form.get("renewpassword"):
-            return render_template('profile.html',message = "New passwords doesn't match",user=session["firstname"],color="danger",details=details)
+            return render_template('profile.html',message = "New passwords doesn't match",user=session["firstname"],color="danger",details=details,name='profile')
         db.execute("UPDATE users SET password =:password WHERE user_id=:user",{'password': generate_password_hash(request.form.get("newpassword"), method='pbkdf2:sha256', salt_length=8),'user': int(session["user_id"])})
         db.commit()
-        return render_template('profile.html',message = "Password Updated Successfully !",user=session["firstname"],color="success",details=details)
+        return render_template('profile.html',message = "Password Updated Successfully !",user=session["firstname"],color="success",details=details,name='profile')
                   
     db.execute("UPDATE users SET username =:username,firstname=:firstname, lastname=:lastname, email=:email WHERE user_id=:user",
                   {'username':username,'firstname':firstname,'lastname':lastname,'email':email,'user': int(session["user_id"])})
     db.commit()
     details = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
-    return render_template('profile.html',message = "Profile updated Succesfully",details = details,user=session["firstname"],color="success")              
+    return render_template('profile.html',message = "Profile updated Succesfully",details = details,user=session["firstname"],color="success",name='profile')              
 
 
 
@@ -189,8 +188,8 @@ def polls():
           db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
                       {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
         db.commit()
-        return redirect("/pollscreated/ongoing")
-    return render_template("create_poll.html",poll_total=poll_total)
+        return redirect("/pollscreated/ongoing",name='polls')
+    return render_template("create_poll.html",poll_total=poll_total,name='polls')
 
 #CREATED POLLS
 @epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
@@ -212,8 +211,8 @@ def ongoingpolls():
             voteforpoll(pollid,vote)
         elif 'result' in request.form:
             print_result=result(pollid)
-            return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,options=options,type=type)
-    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,options=options,type=type)
+            return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,options=options,type=type,name='polls')
+    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,options=options,type=type,name='polls')
 
 
 
@@ -226,8 +225,8 @@ def endedpolls():
     if request.method=='POST':
         pollid=request.form.get("pollid")
         print_result=result(pollid)
-        return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options)
-    return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options)
+        return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options,name='polls')
+    return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options,name='polls')
 
 
 #VOTE FOR OTHER POLLS
@@ -235,7 +234,7 @@ def endedpolls():
 @login_required
 def polltovote():
     if request.method == 'GET':
-        return redirect("/dashboard")
+        return redirect("/dashboard",name='dashboard')
     else:   		
         pollid=request.form.get("pollid")
         return redirect(url_for('search', pollid=pollid)) 
@@ -260,9 +259,9 @@ def search(pollid):
             print_result=result(pollid)
             return render_template("polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options)
         check=checkpoll()
-        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"],options=options))
+        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"],options=options),name='polls')
     else:
-        return render_template("polltovote.html",message="Not found",user=session["firstname"])
+        return render_template("polltovote.html",message="Not found",user=session["firstname"],name='polls')
 
 
 #CONTACT PAGE
@@ -270,7 +269,7 @@ def search(pollid):
 @login_required
 def contact():
     if request.method == 'GET':
-        return render_template("contact.html",user=session["firstname"])
+        return render_template("contact.html",user=session["firstname"],name='contact')
     firstname = request.form.get("firstname")
     lastname = request.form.get("lastname")
     email = request.form.get("email")
@@ -278,14 +277,14 @@ def contact():
     
     db.execute("INSERT INTO contact(firstname,lastname,email,message) VALUES(:firstname,:lastname,:email,:message)",{'firstname':firstname,'lastname':lastname,'email':email,'message':message})
     db.commit()
-    return render_template("contact.html",user=session["firstname"],message = "Message sent successfully !")        
+    return render_template("contact.html",user=session["firstname"],message = "Message sent successfully !",name='contact')        
 
 
 #FAQ
 @epoller.route('/faq')
 @login_required
 def faq():
-    return render_template("faq.html",user=session["firstname"]) 
+    return render_template("faq.html",user=session["firstname"],name='faq') 
 
 #MAIN FUNCTION
 if __name__=='__main__':

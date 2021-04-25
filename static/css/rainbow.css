@@ -69,13 +69,13 @@
 }
 
 .right-container footer #next {
-  background: linear-gradient(90deg,#224abe 10%,#191818 100%);
+  background: linear-gradient(180deg,#224abe 10%,#191818 100%);
   border: 1px solid #224abe;
   color: #fff;
   margin: 0 auto;
 }
 .right-container footer #next:hover {
-  background: #224abe;
+  background: linear-gradient(90deg,#224abe 10%,#191818 100%);
 }
 
 .firstname label, .lastname label, .email label, .aadhar label, .password label,.username label{

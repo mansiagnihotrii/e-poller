@@ -21,14 +21,6 @@
 </head>
 
 <body id="page-top">
-  <script>
-
-    $(".nav li").on("click", function() {
-      $(".nav li").removeClass("active");
-      $(this).addClass("active");
-    });
-
-</script>
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -46,15 +38,24 @@
       </a>
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      {% if name == 'dashboard' %}
+      <li class="nav-item active" name="dashboard">
+        {% else %}
+        <li class="nav-item " name="dashboard">
+        {% endif %}
 
         <a class="nav-link" href="/dashboard">
           <i class="fas fa-home"></i>
           <span>Dashboard</span></a>
+        
 
       </li>
 
-      <li class="nav-item ">
+           {% if name == 'polls' %}
+      <li class="nav-item active" name="polls">
+        {% else %}
+        <li class="nav-item " name="polls">
+        {% endif %}
               <a class="nav-link collapsed"  href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fas fa-poll"></i>
                 <span>Polls </span>
@@ -69,19 +70,31 @@
             </li>
 
 
-      <li class="nav-item ">
+      {% if name == 'profile' %}
+      <li class="nav-item active" name="profile">
+        {% else %}
+        <li class="nav-item " name="profile">
+        {% endif %}
         	<a class="nav-link" href="/profile">
           	<i class="fas fa-user"></i>
           	<span>Profile</span></a>
       </li>
       
-      <li class="nav-item ">
+      {% if name == 'faq' %}
+      <li class="nav-item active" name="faq">
+        {% else %}
+        <li class="nav-item " name="faq">
+        {% endif %}
         	<a class="nav-link" href="/faq">
           	<i class="fas fa-question-circle"></i>
           	<span>FAQs</span></a>
       </li>
-      
-       <li class="nav-item ">
+       
+      {% if name == 'contact' %}
+      <li class="nav-item active" name="contact">
+        {% else %}
+        <li class="nav-item " name="contact">
+        {% endif %}
         	<a class="nav-link" href="/contact">
           	<i class="fas fa-file-signature"></i>
           	<span>Contact Us</span></a>

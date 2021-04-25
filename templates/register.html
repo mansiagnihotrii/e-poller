@@ -22,10 +22,13 @@
 
 <div id="container">
 <div id="over_stuff">
-
-{% if message %}
-  <h3>{{ message }}</h3>
-{% endif %}
+   {% if message %}
+                
+        <div class="alert alert-danger" role="alert" style="transform: translate(250px,80px);">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  {{ message }}
+</div>
+                {% endif %}
 
 <div class='signup-container'>
   <div class='left-container'>
@@ -81,6 +84,7 @@
       
       </div>
         </footer>
+
     </form>
     </header>
    
@@ -89,10 +93,13 @@
   </div>
 </div>
 
+
 </div>
 
 <canvas id="c"></canvas>
 </div>
     <script src="{{ url_for('static', filename='js/rainbow.js') }}"></script>
+       <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
+       <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
 </body>
 </html>

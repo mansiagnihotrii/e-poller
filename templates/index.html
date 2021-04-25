@@ -60,13 +60,13 @@
               {% if not session.get('user_id') %}
             <h3 class="form-header" style="color:wheat;">Login</h3>
             <form method="post" action="{{ url_for('login', next=request.args.get('next')) }}">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-danger" role="alert">{{ message }}</div>
-                    {% endfor %}
+                {% if message %}
+                
+        <div class="alert alert-danger" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  {{ message }}
+</div>
                 {% endif %}
-            {% endwith %}
               <div class="form-group has-success">
                 <input type="text" class="form-control" name="username" placeholder="Username" required/>
               </div>
@@ -87,6 +87,16 @@
       <footer class="footer">
         <p>Made by TEAM ELEMENTRIX @ <script>document.write(new Date().getFullYear());</script> </p>
       </footer>
+        <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
+          <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
+<script>
+window.setTimeout(function() {
+  
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove(); 
+    });
+}, 4000);
 
+</script>
   </body>
 </html>
