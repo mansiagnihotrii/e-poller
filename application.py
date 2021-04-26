@@ -75,7 +75,7 @@ def login():
             return render_template("index.html",message = "Invalid username/password")
         session["user_id"] = row[0]["user_id"]
         session["firstname"]=row[0]["firstname"]
-        return redirect("/dashboard",name='dashboard')
+        return redirect("/dashboard")
 
 
 #DASHBOARD
