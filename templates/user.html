@@ -1,6 +1,37 @@
 {% extends "layout.html" %}
 {% block title %} DASHBOARD {% endblock %}
 {%block head%}
+
+<style>
+  @media screen and (max-width: 600px) {
+  .c{
+    width: 100%;
+  }
+}
+img{
+ display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+
+}
+
+
+/* Clear floats after the columns */
+.r:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.r {
+  display: flex;
+}
+
+.c {
+
+  flex: 50%;
+}
+  </style>
        {% endblock %}
 
 
@@ -80,6 +111,16 @@
              </div>
            </div>
          </div>
-       </div>
 
+       </div>
+       <div class="r">
+<div class="c">
+<img src="../static/images/pikachu.png">
+</div>
+<div class="c" style="transform: translate(0%,40%);">
+  <p> No polls created Yet ! <br>
+  <a href="/createpoll"> Create Now !! </a>
+</p>
+</div>
+</div>
 {% endblock %}
