@@ -143,6 +143,9 @@ def profile():
     if request.method == "GET":
         return render_template("profile.html",details = details,user=session["firstname"],name='profile')
     username = request.form.get("username")
+    row = db.execute("SELECT * FROM users WHERE username = :username", {'username': username}).fetchall()
+    if len(row) != 0:
+        return render_template("profile.html", message = "Username Already Exist",user=session["firstname"],color="danger",details=details,name='profile')
     firstname = request.form.get("firstname")
     lastname = request.form.get("lastname")
     email = request.form.get("email")
