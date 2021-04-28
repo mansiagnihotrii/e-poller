@@ -3,11 +3,7 @@
 {%block head%}
 
 <style>
-  @media screen and (max-width: 600px) {
-  .c{
-    width: 100%;
-  }
-}
+
 img{
  display: block;
   margin-left: auto;
@@ -16,21 +12,12 @@ img{
 
 }
 
-
-/* Clear floats after the columns */
-.r:after {
-  content: "";
-  display: table;
-  clear: both;
+p{
+font-family: system-ui;
+font-size: 1.3rem;
+color: black;
 }
-.r {
-  display: flex;
-}
-
-.c {
-
-  flex: 50%;
-}
+    
   </style>
        {% endblock %}
 
@@ -113,14 +100,15 @@ img{
          </div>
 
        </div>
-       <div class="r">
-<div class="c">
+       <div class="row">
+<div class="col-xl-5">
 <img src="../static/images/pikachu.png">
 </div>
-<div class="c" style="transform: translate(0%,40%);">
+<div class="col-xl-3" style="transform: translate(0%,40%);">
   <p> No polls created Yet ! <br>
   <a href="/createpoll"> Create Now !! </a>
 </p>
 </div>
 </div>
 {% endblock %}
+

@@ -1323,7 +1323,9 @@ button.bg-danger:focus {
 .bg-light {
   background-color: #f8f9fa !important;
 }
-
+.bg-white{
+  background-color: #ffffff !important;
+}
 a.bg-light:hover,
 a.bg-light:focus,
 button.bg-light:hover,
@@ -1342,9 +1344,7 @@ button.bg-dark:focus {
   background-color: #1d2124 !important;
 }
 
-.bg-white {
-  background-color: #ffffff !important;
-}
+
 
 .bg-transparent {
   background-color: transparent !important;
@@ -11825,8 +11825,7 @@ thead.thead-inverse th,
 }
 
 body {
-  background-color: #eee;
-  color: #3C4858;
+ color: #3C4858;
   font-weight: 300;
 }
 
