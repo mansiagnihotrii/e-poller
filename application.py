@@ -191,7 +191,7 @@ def polls():
           db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
                       {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
         db.commit()
-        return redirect("/pollscreated/ongoing",name='polls')
+        return redirect("/pollscreated/ongoing")
     return render_template("create_poll.html",poll_total=poll_total,name='polls')
 
 #CREATED POLLS
@@ -212,6 +212,7 @@ def ongoingpolls():
         elif 'voteforpoll' in request.form:
             vote=request.form.get("vote")
             voteforpoll(pollid,vote)
+            return redirect("/pollscreated/ongoing")
         elif 'result' in request.form:
             print_result=result(pollid)
             return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,options=options,type=type,name='polls')

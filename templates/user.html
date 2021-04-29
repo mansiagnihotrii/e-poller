@@ -100,6 +100,7 @@ color: black;
          </div>
 
        </div>
+       {% if poll_total_user == 0 %}
        <div class="row">
 <div class="col-xl-5">
 <img src="../static/images/pikachu.png">
@@ -110,5 +111,6 @@ color: black;
 </p>
 </div>
 </div>
+{% endif %}
 {% endblock %}
 

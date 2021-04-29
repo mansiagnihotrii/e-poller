@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 {% block title %} DASHBOARD {% endblock %}
 {%block head%}
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
+    <style>
+           .btn-success{
+          background: linear-gradient(90deg,#224abe 10%,#191818 100%);
+    border-color: #224abe;
+  }
+</style>
         {% endblock %}
 
 
@@ -12,10 +19,23 @@
 
        </div>
 
+              <div class="row">
+
+                          <!-- Area Chart -->
+                          <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background: linear-gradient(90deg,#224abe 10%,#191818 100%); color:white;">
+                      <h5 class="h5 mb-0 text-gray-800" style="color: white;">Current Poll ID : {{poll_total +1}} </h5>
+               
+
+                </div>
+                <div class="card-body">
+                  <div class="chart-area" style="height: 100%;">
+
+          
+                
 <form method="post" action="/createpoll">
-  <div class="form-group has-success">
-          <h5>Current Poll ID : {{poll_total +1}} </h5>
-        </div>
+
 
    <div class="form-group has-success">
            <label for="question" class="sr-only">Enter Question</label>
@@ -35,9 +55,14 @@
 <span id="new"></span>
 <div>
 
-       <input type="button" value="Add more options" class="btn btn-primary" onclick="createEl();"></div>
+       <input type="button" value="Add more options" class="btn btn-danger" onclick="createEl();"></div>
        <br>
          <button class="btn btn-lg btn-success btn-block" type="submit" >Submit Poll</button>
        </form>
+         </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
 {% endblock %}
