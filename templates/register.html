@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 
 
   </head>
@@ -44,38 +45,40 @@
       <div class="set">
         <div class="firstname">
           <label for="firstname">First Name</label>
-          <input name="firstname" id="firstname" placeholder="First Name" type="text" required>
+          <input name="firstname" id="firstname"  type="text" required>
         </div>
 <div class="lastname">
           <label for="lastname">Last Name</label>
-          <input name="lastname" id="lastname" placeholder="Last Name" type="text" required>
+          <input name="lastname" id="lastname"  type="text" required>
         </div>
       </div>
       <div class="set">
         <div class="username">
           <label for="username">Username</label>
-          <input name="username" id="username" placeholder="Username" type="text" required>
+          <input name="username" id="username"  type="text" required>
         </div>
         <div class="email">
           <label for="email">Email Address</label>
-          <input name="email" id="email" placeholder="Email Address" type="email" required>
+          <input name="email" id="email"  type="email" required>
         </div>
       </div>
             <div class="set">
         <div class="aadhar">
           <label for="aadhar">Aadhar ID</label>
-          <input name="aadhar" id="aadhar" placeholder="Aadhar ID" type="text" minlength="12" maxlength="12" required>
+          <input name="aadhar" id="aadhar"  type="text" minlength="12" maxlength="12" required>
         </div>
 </div>
    
           <div class="set">
         <div class="password">
           <label for="password">Password</label>
-          <input name="password" id="password" placeholder="Password" type="password" required>
+          <input name="password" id="password"  type="password" required>
+          <i class="fas fa-eye" id="togglePassword" style="margin-left: -13%;color: grey;cursor: pointer;"></i>
         </div>
         <div class="password">
           <label for="password">Repeat Password</label>
-          <input name="confirmation" id="password" placeholder="Repeat Password" type="password" required>
+          <input name="confirmation" id="confirmation"  type="password" required>
+          <i class="fas fa-eye" id="togglePasswordrepeat" style="margin-left: -13%;color: grey;cursor: pointer;"></i>
         </div>
       </div>
        <footer>
@@ -101,5 +104,25 @@
     <script src="{{ url_for('static', filename='js/rainbow.js') }}"></script>
        <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
        <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
+       <script type="text/javascript">
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        const confirmation = document.querySelector('#confirmation');
+        const togglePasswordrepeat = document.querySelector('#togglePasswordrepeat');
+
+        togglePassword.addEventListener('click',function (e){
+          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+         
+          password.setAttribute('type',type);
+       
+          this.classList.toggle('fa-eye-slash');
+        });
+
+        togglePasswordrepeat.addEventListener('click',function (e){
+          const con = confirmation.getAttribute('type') === 'password' ? 'text' : 'password';
+          confirmation.setAttribute('type',con);
+          this.classList.toggle('fa-eye-slash');
+        });
+       </script>
 </body>
 </html>

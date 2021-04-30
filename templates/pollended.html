@@ -4,16 +4,6 @@
       {% block head %}
       <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
       <style>
-      .btn-block
-      {
-        display:inline-block;
-        width:30%;
-      }
-      .btn-success{
-          background: linear-gradient(90deg,#224abe 10%,#191818 100%);
-    border-color: #224abe;
-  }
-
 
 /* -----------------------------------------------------
   CSS Progress Bars
@@ -193,7 +183,7 @@
                    {% for op in options %}
                             
                             {% if op["pollid"] == poll["pollid"] %}
-                  <h4 class="small font-weight-bold">{{op["name"]}} <span class="float-right" style = "color:#e74a3b">{{print_result[0]}}%</span></h4>
+                  <h4 class="small font-weight-bold">{{op["name"]}} <span class="float-right" style = "color:#e74a3b">100%</span></h4>
                   <main>
   <div class="main-content">
 
