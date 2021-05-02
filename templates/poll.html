@@ -218,7 +218,6 @@
                                             <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
                                                   {% endif %}
 <form>
-                                                  <button class="btn btn-lg btn-success btn-block" id='result' type="submit" name="result">Result</button>
                                           <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
                                         </form>
                                         {% else %}
@@ -234,7 +233,7 @@
                 </div>
               </div>
             </div>
-            {% if print_result %}
+          
             <div class="col-xl-4 col-lg-5">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
@@ -253,7 +252,7 @@
 
       <div class="cssProgress">
         <div class="progress2">
-          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="80" style="width: 80%;">
+          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: 100%;">
           </div>
         </div>
       </div>
@@ -269,7 +268,7 @@
                   </div>
               </div>
             </div>
-            {% endif %}
+        
             </div>
             <br><br>
 

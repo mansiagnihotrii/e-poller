@@ -6,10 +6,20 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import login_required
+from flask_mail import Mail,Message
 
 
 epoller= Flask(__name__)
+mail = Mail(epoller)
 
+#configuration of Mail
+epoller.config['MAIL_SERVER']='smtp.gmail.com'
+epoller.config['MAIL_PORT'] = 465
+epoller.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
+epoller.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
+epoller.config['MAIL_USE_TLS'] = False
+epoller.config['MAIL_USE_SSL'] = True
+mail = Mail(epoller)
 
 # CHECK FOR ENVIRONMENT VARIABLES
 if not os.getenv("DATABASE_URL"):
@@ -202,21 +212,18 @@ def ongoingpolls():
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended=0  ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
     options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
     pollid=request.form.get("pollid")
-    
+    print_result=result(pollid)
     check=checkpoll()
     if request.method=='POST':
         if 'end' in request.form:
             db.execute("UPDATE poll SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
             db.commit()
             return redirect("/pollscreated/ended")
-        elif 'voteforpoll' in request.form:
+        if 'voteforpoll' in request.form:
             vote=request.form.get("vote")
             voteforpoll(pollid,vote)
             return redirect("/pollscreated/ongoing")
-        elif 'result' in request.form:
-            print_result=result(pollid)
-            return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,print_result=print_result,options=options,type=type,name='polls')
-    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,options=options,type=type,name='polls')
+    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,options=options,type=type,name='polls',print_result=print_result)
 
 
 
@@ -281,6 +288,13 @@ def contact():
     
     db.execute("INSERT INTO contact(firstname,lastname,email,message) VALUES(:firstname,:lastname,:email,:message)",{'firstname':firstname,'lastname':lastname,'email':email,'message':message})
     db.commit()
+    msg = Message(
+        'Feedback received from '+firstname+' '+lastname,
+        sender = os.getenv("MAIL_USERNAME"),
+        recipients = [os.getenv("MAIL_USERNAME")]
+        )
+    msg.body = "Name: "+firstname+" "+lastname+"\n"+"Email: "+email+"\n"+"Message: "+message
+    mail.send(msg)
     return render_template("contact.html",user=session["firstname"],message = "Message sent successfully !",name='contact')        
 
 

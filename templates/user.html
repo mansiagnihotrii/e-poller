@@ -100,6 +100,78 @@ color: black;
          </div>
 
        </div>
+
+
+       <div class="d-sm-flex align-items-center justify-content-between mb-4">
+         <h1 class="h3 mb-0 text-gray-800">Recent Creations</h1>
+
+       </div>
+
+       <!-- Content Row -->
+       <div class="row">
+
+         <!-- TOTAL POLLS -->
+         <div class="col-xl-3 col-md-6 mb-4">
+           <div class="card border-left-primary shadow h-100 py-2">
+             <div class="card-body">
+               <div class="row no-gutters align-items-center">
+                 <div class="col mr-2">
+                   <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL POLLS CREATED</div>
+                   <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_total_user}}</div>
+                 </div>
+                 <div class="col-auto">
+                   <span style="font-size:2em;color:#4e73df;">
+                   <i class="fa fa-poll"></i>
+                  </span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <!-- ONGOING POLLS -->
+         <div class="col-xl-3 col-md-6 mb-4">
+           <div class="card border-left-warning shadow h-100 py-2">
+             <div class="card-body">
+               <div class="row no-gutters align-items-center">
+                 <div class="col mr-2">
+                   <a href="/pollscreated/ongoing" class="text-xs font-weight-bold text-warning text-uppercase mb-1">ONGOING POLLS</a>
+                   <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_ongoing}}</div>
+                 </div>
+                 <div class="col-auto">
+                   <span style="font-size:2em;color:#f6c23e;">
+                   <i class="fa fa-clock"></i>
+    </span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <!-- ENDED POLLS -->
+         <div class="col-xl-3 col-md-6 mb-4">
+           <div class="card border-left-info shadow h-100 py-2">
+             <div class="card-body">
+               <div class="row no-gutters align-items-center">
+                 <div class="col mr-2">
+                   <a href="/pollscreated/ended" class="text-xs font-weight-bold text-success text-uppercase mb-1">ENDED POLL</a>
+                   <div class="row no-gutters align-items-center">
+                     <div class="col-auto">
+                       <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{poll_ended}}</div>
+                     </div>
+                     </div>
+                 </div>
+                 <div class="col-auto">
+                   <span style="font-size:2em;color:#36b9cc;">
+                   <i class="fa fa-check-circle"></i>
+    </span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+       </div>
        {% if poll_total_user == 0 %}
        <div class="row">
 <div class="col-xl-5">
