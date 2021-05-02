@@ -64,7 +64,7 @@ def result(pollid):
 #FUNCTION TO SEND EMAIL
 def send_email(receiver,message,subject):
     msg = Message(
-        title,
+        subject,
         sender = os.getenv("MAIL_USERNAME"),
         recipients = receiver
         )
