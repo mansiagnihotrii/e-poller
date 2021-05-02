@@ -19,16 +19,16 @@ If you are not familiar with heroku , follow these steps:
 
 ### SET UP ENVIRONMENT VARIABLES
 
-****DATABASE_URL : ****
+****DATABASE_URL****
 Set DATABASE_URL environment variable to the value of URI in your Heroku Credentials.
 
-****FLASK_APP : ****
+****FLASK_APP****
 Set FLASK_APP environment variable to value "application.py"
 
-****MAIL_USERNAME : ****
+****MAIL_USERNAME****
 Set MAIL_USERNAME environment variable to the gmail address you want to use for sending mail
 
-****MAIL_PASSWORD : ****
+****MAIL_PASSWORD****
 Set MAIL_PASSWORD environment variable to the password of the gmail address provided above
 
 
