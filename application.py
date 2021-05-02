@@ -61,6 +61,16 @@ def result(pollid):
     return list(result_dict.values())
 
 
+#FUNCTION TO SEND EMAIL
+def send_email(receiver,message,subject):
+    msg = Message(
+        title,
+        sender = os.getenv("MAIL_USERNAME"),
+        recipients = receiver
+        )
+    msg.body = message
+    mail.send(msg)
+
 #HOME PAGE
 @epoller.route("/")
 @login_required
@@ -287,14 +297,11 @@ def contact():
     message = request.form.get("message")
     
     db.execute("INSERT INTO contact(firstname,lastname,email,message) VALUES(:firstname,:lastname,:email,:message)",{'firstname':firstname,'lastname':lastname,'email':email,'message':message})
-    db.commit()
-    msg = Message(
-        'Feedback received from '+firstname+' '+lastname,
-        sender = os.getenv("MAIL_USERNAME"),
-        recipients = [os.getenv("MAIL_USERNAME")]
-        )
-    msg.body = "Name: "+firstname+" "+lastname+"\n"+"Email: "+email+"\n"+"Message: "+message
-    mail.send(msg)
+    db.commit() 
+    receiver = [os.getenv("MAIL_USERNAME")]
+    message = "Name: "+firstname+" "+lastname+"\n"+"Email: "+email+"\n"+"Message: "+message
+    subject = 'Feedback received from '+firstname+' '+lastname
+    send_email(receiver,message,subject)
     return render_template("contact.html",user=session["firstname"],message = "Message sent successfully !",name='contact')        
 
 
