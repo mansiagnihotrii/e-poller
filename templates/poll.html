@@ -172,6 +172,11 @@
         {% block heading %}      <h1 class="h3 mb-0 text-gray-800">Ongoing Polls</h1> {% endblock heading %}
 
       </div>
+      {% if error %}
+       <div class="alert alert-danger" role="alert">  {{error}}</div>
+      {% endif %}
+
+
                 {% if totalpolls %}
                 {% for poll in totalpolls  %}
 
@@ -183,7 +188,7 @@
                             <div class="card shadow mb-4" style="min-width: 400px;">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background: linear-gradient(90deg,#224abe 10%,#191818 100%); color:white;">
                       <h3 class="h3 mb-0 text-gray-800" style="color: white; font-size: 120%; font-weight:700; overflow: hidden; padding-right: 30px; ">{{poll["question"]}}</h3>
-                  <h6 class="m-0 font-weight-bold text-primary" style="color: #a4b8f1 !important;">Poll ID : {{poll["pollid"] }}</h6>
+                  <h6 class="m-0 font-weight-bold text-primary" style="color: #a4b8f1 !important;">Poll ID : {{poll["pollid"]}}</h6>
 
                 </div>
                 <!-- Card Body -->
@@ -193,20 +198,26 @@
                     {% block form %}    <form method="post" action="/pollscreated/ongoing">  {% endblock form %}
 
 
-
+                     
                             <input type="hidden" name="pollid" value='{{poll["pollid"]}}'>
+                     
                             {% for op in options %}
+                            {% if op["pollid"] == poll["pollid"]%}
                             
-                            {% if op["pollid"] == poll["pollid"] %}
+                         
                      <div class="form-group has-success">
-                            <input type="radio" id="option1" name="vote" value=1 >
-                            <label for="option1"> {{op["name"]}}</label><br>
+                            <input type="radio" id="option1" name="vote" value='{{op["option_id"]}}' >
+                            <label for="option1" id="opp"> {{op["name"]}}</label><br>
+
+
+                     
 
 
  
                     </div>
+{% endif %}
                       
-                    {% endif %}
+               
                      {% endfor %}
 
                           {% if type%}
@@ -240,11 +251,13 @@
                   <h6 class="m-0 font-weight-bold text-primary">Result</h6>
                 </div>
                 <div class="card-body">
+                  
+           
+               {% for k,v in print_result[poll["pollid"]].items()%}
+            
 
-                   {% for op in options %}
-                            
-                            {% if op["pollid"] == poll["pollid"] %}
-                  <h4 class="small font-weight-bold">{{op["name"]}} <span class="float-right" style = "color:#e74a3b">{{print_result[0]}}%</span></h4>
+                  <h4 class="small font-weight-bold" id="opp"> {{k}}<span class="float-right" style = "color:#e74a3b">{{v}}%</span></h4>
+
                   <main>
   <div class="main-content">
 
@@ -252,19 +265,19 @@
 
       <div class="cssProgress">
         <div class="progress2">
-          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: 100%;">
+          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: {{v}}%;">
           </div>
         </div>
       </div>
 
-    </div><!-- @end #example-5 -->
+    </div>
 
 
 
   </div>
 </main>
-                 {% endif %}
-                     {% endfor %}
+
+{% endfor %}
                   </div>
               </div>
             </div>
@@ -279,6 +292,7 @@
           {% endif %}
             <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'>
   </script>
+
   <script>
     $(document).ready(function() {
 

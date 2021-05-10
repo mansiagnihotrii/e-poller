@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import login_required
+from collections import OrderedDict
 from flask_mail import Mail,Message
 
 
@@ -36,8 +37,10 @@ db = scoped_session(sessionmaker(bind=engine))
 
 #FUNCTION TO INSERT VOTE INTO DATABASE
 def voteforpoll(pollid,option):
-    db.execute("INSERT INTO votes (pollid,user_id,option) VALUES(:pollid,:user_id,:option)",
-                        {'pollid':pollid, 'user_id':int(session["user_id"]), 'option':option})
+    db.execute("INSERT INTO votes (pollid,user_id,option_id) VALUES(:pollid,:user_id,:option_id)",
+                        {'pollid':pollid, 'user_id':int(session["user_id"]), 'option_id':option})
+    db.execute("UPDATE result SET totalvotes = totalvotes+1 WHERE pollid=:pollid",{'pollid':pollid})
+    db.execute("UPDATE option SET votes = votes+1 WHERE option_id=:option_id",{'option_id':option})
     db.commit()
 
 
@@ -50,16 +53,16 @@ def checkpoll():
 
 #FUNCTION TO RETURN RESULT OF A POLL
 def result(pollid):
-    result_dict = {'1':0 , '2':0 , '3':0 , '4':0}
-    #LIST1 CONTAINS VOTES EACH OPTION RECEIVED
-    list1=db.execute("SELECT COUNT(option) AS result, option FROM votes WHERE pollid=:pollid GROUP BY option ORDER BY option ASC",{'pollid':pollid}).fetchall()
-    #LIST2 CONTAINS TOTAL NUMBER OF VOTES SUBMITTED
-    list2=db.execute("SELECT COUNT(option)AS total_votes FROM votes WHERE pollid=:pollid ",{'pollid':pollid}).fetchall()
-    #CALCULATE PERCENTAGE OF VOTES EACH OPTION RECEIVED AND STORE IN THE RESULT
-    for item in range(len(list1)):
-        result_dict[list1[item]["option"]] = round((list1[item]["result"]/list2[0]["total_votes"])*100,2)
-    return list(result_dict.values())
-
+    totalvotes = db.execute("SELECT totalvotes FROM result WHERE pollid=:pollid",{'pollid':pollid}).scalar()
+    options = db.execute("SELECT * FROM option WHERE pollid=:pollid ORDER BY option_id ASC",{'pollid':pollid}).fetchall()
+    print_result = OrderedDict()
+    for item in range(len(options)):
+        if totalvotes == 0:
+            temp = 0
+        else:
+            temp = round((options[item]["votes"]/totalvotes)*100,2)
+        print_result[options[item]["name"]] = temp
+    return print_result
 
 #FUNCTION TO SEND EMAIL
 def send_email(receiver,message,subject):
@@ -81,7 +84,10 @@ def index():
     else:
        return redirect("/login")
 
-
+#TEAM PAGE
+@epoller.route("/team")
+def team():
+    return render_template("team.html")
 
 #LOGIN PAGE
 @epoller.route("/login", methods=['GET', 'POST'])
@@ -205,14 +211,16 @@ def polls():
         poll_detail=db.execute("SELECT COUNT(*) FROM poll ").scalar()
         db.execute("INSERT INTO poll (pollid,question,user_id) VALUES(:pollid,:question, :user_id)",
                       {'pollid':poll_detail+1, 'question': request.form.get("question"), 'user_id':int(session["user_id"])})
+        db.execute("INSERT INTO result (pollid,totalvotes) VALUES(:pollid,:totalvotes)",{'pollid':poll_detail+1,'totalvotes':0})
                   
         temp = request.form.getlist("option")
         for name in temp:   
           db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
                       {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
         db.commit()
-        return redirect("/pollscreated/ongoing")
-    return render_template("create_poll.html",poll_total=poll_total,name='polls')
+        url = "/search/"+str(int(poll_detail+1))
+        return redirect(url)
+    return render_template("create_poll.html",poll_total=poll_total,name='polls',user=session["firstname"])
 
 #CREATED POLLS
 @epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
@@ -220,20 +228,28 @@ def polls():
 def ongoingpolls():
     type = "created"
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended=0  ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
-    options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
-    pollid=request.form.get("pollid")
-    print_result=result(pollid)
-    check=checkpoll()
+    options = db.execute("SELECT * FROM option WHERE user_id = :user AND ended=0 ORDER BY option_id ASC", {'user': int(session["user_id"])}).fetchall()
+    check = checkpoll()
+    error = ""
+    print_result = {}
+    for x in range(len(totalpolls)):
+        p = totalpolls[x]["pollid"]
+        print_result[p] = result(p)
     if request.method=='POST':
+        pollid=request.form.get("pollid")
         if 'end' in request.form:
             db.execute("UPDATE poll SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
+            db.execute("UPDATE option SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
             db.commit()
             return redirect("/pollscreated/ended")
         if 'voteforpoll' in request.form:
-            vote=request.form.get("vote")
-            voteforpoll(pollid,vote)
-            return redirect("/pollscreated/ongoing")
-    return render_template("/poll.html",user=session["firstname"],totalpolls=totalpolls,check=check,options=options,type=type,name='polls',print_result=print_result)
+            if pollid in check:
+                error = "Already voted"
+            else:
+                vote=request.form.get("vote")
+                voteforpoll(pollid,vote)
+                return redirect("/pollscreated/ongoing")
+    return render_template("/poll.html",error=error,totalpolls=totalpolls,user=session["firstname"],check=check,options=options,type=type,name='polls',print_result=print_result)
 
 
 
@@ -242,24 +258,13 @@ def ongoingpolls():
 @login_required
 def endedpolls():
     totalpolls = db.execute("SELECT * FROM poll WHERE user_id = :user AND ended =1 ORDER BY pollid DESC", {'user': int(session["user_id"])}).fetchall()
-    options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
-    if request.method=='POST':
-        pollid=request.form.get("pollid")
-        print_result=result(pollid)
-        return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options,name='polls')
-    return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options,name='polls')
-
-
-#VOTE FOR OTHER POLLS
-@epoller.route('/polltovote',methods=['GET','POST'])
-@login_required
-def polltovote():
-    if request.method == 'GET':
-        return redirect("/dashboard",name='dashboard')
-    else:   		
-        pollid=request.form.get("pollid")
-        return redirect(url_for('search', pollid=pollid)) 
-        
+    options = db.execute("SELECT * FROM option WHERE user_id = :user ORDER BY option_id ASC", {'user': int(session["user_id"])}).fetchall()
+    print_result = {}
+    for x in range(len(totalpolls)):
+        p = totalpolls[x]["pollid"]
+        print_result[p] = result(p)
+    return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options,print_result=print_result,name='polls')
+       
         
 
 #VOTE FOR OTHER POLLS        
@@ -268,21 +273,27 @@ def polltovote():
 def search(pollid):
     totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
     options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
+    print_result = {}
+    for x in range(len(totalpolls)):
+        p = totalpolls[x]["pollid"]
+        print_result[p] = result(p)
+    error=""
     if len(totalpolls) != 0:
+        check=checkpoll()
         if totalpolls[0]["user_id"]!= int(session["user_id"]):
             hide=0
         else:
             hide=1
         if 'voteforpoll' in request.form:
-            vote=request.form.get("vote")
-            voteforpoll(pollid,vote)
-        elif 'result' in request.form:
-            print_result=result(pollid)
-            return render_template("polltovote.html",user=session["firstname"],totalpolls=totalpolls,print_result=print_result,options=options)
-        check=checkpoll()
-        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"],options=options),name='polls')
+            if pollid in check:
+                error = "Already voted"
+            else:
+                vote=request.form.get("vote")
+                voteforpoll(pollid,vote)
+        
+        return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]),options=options,name='polls',print_result=print_result,error=error)
     else:
-        return render_template("polltovote.html",message="Not found",user=session["firstname"],name='polls')
+        return render_template("polltovote.html",message="Not found",user=session["firstname"],name='polls',print_result=print_result,error=error)
 
 
 #CONTACT PAGE
@@ -310,6 +321,10 @@ def contact():
 @login_required
 def faq():
     return render_template("faq.html",user=session["firstname"],name='faq') 
+
+@epoller.errorhandler(404)
+def page_not_found(e):
+    return render_template('error_page.html'), 404
 
 #MAIN FUNCTION
 if __name__=='__main__':

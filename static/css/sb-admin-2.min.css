@@ -10661,7 +10661,7 @@ a:focus {
 
 @media (min-width: 768px) {
     .chart-area {
-        height:20rem
+        height:100%
     }
 }
 

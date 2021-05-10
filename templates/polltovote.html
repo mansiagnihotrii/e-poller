@@ -16,12 +16,9 @@
                       {% else %}
                 <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
                       {% endif %}
-                       <button class="btn btn-lg btn-success btn-block" id='result' type="submit" name="result">Result</button>
                         {% if hide == 1 %}
                               <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" >End poll</button>
                         {% endif %}
-                    {% else %}
-                       <button class="btn btn-lg btn-success btn-block" id='result' type="submit" name="result">Result</button>
                        {% endif %}
       {% endfor %}
             {% endif %}
