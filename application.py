@@ -84,10 +84,6 @@ def index():
     else:
        return redirect("/login")
 
-#TEAM PAGE
-@epoller.route("/team")
-def team():
-    return render_template("team.html")
 
 #LOGIN PAGE
 @epoller.route("/login", methods=['GET', 'POST'])
@@ -264,8 +260,18 @@ def endedpolls():
         p = totalpolls[x]["pollid"]
         print_result[p] = result(p)
     return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options,print_result=print_result,name='polls')
-       
-        
+ 
+
+#VOTE FOR OTHER POLLS
+@epoller.route('/polltovote',methods=['GET','POST'])
+@login_required
+def polltovote():
+    if request.method == 'GET':
+        return redirect("/dashboard",name='dashboard')
+    else:           
+        pollid=request.form.get("pollid")
+        return redirect(url_for('search', pollid=pollid)) 
+
 
 #VOTE FOR OTHER POLLS        
 @epoller.route('/search/<int:pollid>',methods=['GET','POST'])
