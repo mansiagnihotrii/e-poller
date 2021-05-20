@@ -14,7 +14,7 @@ def main():
     db.execute("CREATE TABLE users (user_id SERIAL PRIMARY KEY, firstname VARCHAR NOT NULL, lastname VARCHAR NOT NULL, email VARCHAR NOT NULL, aadhar VARCHAR NOT NULL, username VARCHAR NOT NULL, password VARCHAR NOT NULL)")
     
     #TABLE TO STORE POLLS
-    db.execute("CREATE TABLE poll (question VARCHAR NOT NULL ,pollid INTEGER NOT NULL PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(user_id),ended INTEGER DEFAULT 0)")
+    db.execute("CREATE TABLE poll (question VARCHAR NOT NULL ,pollid INTEGER NOT NULL PRIMARY KEY,user_id INTEGER NOT NULL REFERENCES users(user_id),ended INTEGER DEFAULT 0,totalvotes INTEGER DEFAULT 0)")
     
     #TABLE TO STORE OPTIONS
     db.execute("CREATE TABLE option (option_id SERIAL PRIMARY KEY, name VARCHAR NOT NULL,pollid INTEGER NOT NULL,user_id INTEGER NOT NULL REFERENCES users(user_id),ended INTEGER DEFAULT 0,votes INTEGER DEFAULT 0)")
@@ -25,8 +25,6 @@ def main():
     #TABLE TO STORE MESSAGES RECEIVED FROM USER
     db.execute("CREATE TABLE contact (firstname VARCHAR NOT NULL,lastname VARCHAR NOT NULL,message VARCHAR NOT NULL,email VARCHAR NOT NULL)")
 
-    #TABLE TO STORE RESULT
-    db.execute("CREATE TABLE result (pollid INTEGER NOT NULL REFERENCES poll(pollid), totalvotes INTEGER NOT NULL)")
     db.commit()
 
 

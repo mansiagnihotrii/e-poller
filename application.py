@@ -39,7 +39,7 @@ db = scoped_session(sessionmaker(bind=engine))
 def voteforpoll(pollid,option):
     db.execute("INSERT INTO votes (pollid,user_id,option_id) VALUES(:pollid,:user_id,:option_id)",
                         {'pollid':pollid, 'user_id':int(session["user_id"]), 'option_id':option})
-    db.execute("UPDATE result SET totalvotes = totalvotes+1 WHERE pollid=:pollid",{'pollid':pollid})
+    db.execute("UPDATE poll SET totalvotes = totalvotes+1 WHERE pollid=:pollid",{'pollid':pollid})
     db.execute("UPDATE option SET votes = votes+1 WHERE option_id=:option_id",{'option_id':option})
     db.commit()
 
@@ -53,7 +53,7 @@ def checkpoll():
 
 #FUNCTION TO RETURN RESULT OF A POLL
 def result(pollid):
-    totalvotes = db.execute("SELECT totalvotes FROM result WHERE pollid=:pollid",{'pollid':pollid}).scalar()
+    totalvotes = db.execute("SELECT totalvotes FROM poll WHERE pollid=:pollid",{'pollid':pollid}).scalar()
     options = db.execute("SELECT * FROM option WHERE pollid=:pollid ORDER BY option_id ASC",{'pollid':pollid}).fetchall()
     print_result = OrderedDict()
     for item in range(len(options)):
@@ -105,10 +105,13 @@ def login():
 @login_required
 def dashboard():
     poll_total=db.execute("SELECT COUNT(*) FROM poll ").scalar() #TOTAL POLLS CREATED
-    poll_total_user=db.execute("SELECT COUNT(*)FROM poll WHERE user_id=:userid",{'userid':int(session["user_id"])}).scalar() #TOTAL POLLS CREATED BY CURRENT USER
+    temp=db.execute("SELECT * FROM poll WHERE user_id=:userid ORDER BY totalvotes DESC",{'userid':int(session["user_id"])}).fetchall() #TOTAL POLLS CREATED BY CURRENT USER
     poll_ongoing=db.execute("SELECT COUNT(*) FROM poll WHERE ended =0 AND user_id=:userid",{'userid':int(session["user_id"])}).scalar() #TOTAL ONGOING POLLS
+    poll_total_user = len(temp)
     poll_ended=poll_total_user-poll_ongoing #TOTAL ENDED POLLS
-    return render_template("user.html",user=session["firstname"],poll_total=poll_total,poll_total_user=poll_total_user,poll_ongoing=poll_ongoing,poll_ended=poll_ended,name='dashboard')
+
+
+    return render_template("user.html",temp=temp,user=session["firstname"],poll_total=poll_total,poll_total_user=poll_total_user,poll_ongoing=poll_ongoing,poll_ended=poll_ended,name='dashboard')
 
 
 
@@ -207,7 +210,6 @@ def polls():
         poll_detail=db.execute("SELECT COUNT(*) FROM poll ").scalar()
         db.execute("INSERT INTO poll (pollid,question,user_id) VALUES(:pollid,:question, :user_id)",
                       {'pollid':poll_detail+1, 'question': request.form.get("question"), 'user_id':int(session["user_id"])})
-        db.execute("INSERT INTO result (pollid,totalvotes) VALUES(:pollid,:totalvotes)",{'pollid':poll_detail+1,'totalvotes':0})
                   
         temp = request.form.getlist("option")
         for name in temp:   
@@ -296,7 +298,7 @@ def search(pollid):
             else:
                 vote=request.form.get("vote")
                 voteforpoll(pollid,vote)
-        
+                return redirect('/search/'+str(pollid))
         return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]),options=options,name='polls',print_result=print_result,error=error)
     else:
         return render_template("polltovote.html",message="Not found",user=session["firstname"],name='polls',print_result=print_result,error=error)
