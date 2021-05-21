@@ -17,7 +17,7 @@
                 <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
                       {% endif %}
                         {% if hide == 1 %}
-                              <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" >End poll</button>
+                              <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
                         {% endif %}
                        {% endif %}
       {% endfor %}

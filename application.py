@@ -292,13 +292,20 @@ def search(pollid):
             hide=0
         else:
             hide=1
+
+        if 'end' in request.form:
+            db.execute("UPDATE poll SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
+            db.execute("UPDATE option SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
+            db.commit()
+            return redirect('/search/'+str(pollid ))
+            
         if 'voteforpoll' in request.form:
             if pollid in check:
                 error = "Already voted"
             else:
                 vote=request.form.get("vote")
                 voteforpoll(pollid,vote)
-                return redirect('/search/'+str(pollid))
+                return redirect('/search/'+str(pollid ))
         return render_template("polltovote.html", totalpolls=totalpolls, user=session["firstname"],hide=hide,check=check,end=int(totalpolls[0]["ended"]),options=options,name='polls',print_result=print_result,error=error)
     else:
         return render_template("polltovote.html",message="Not found",user=session["firstname"],name='polls',print_result=print_result,error=error)
