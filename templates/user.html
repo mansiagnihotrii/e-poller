@@ -140,7 +140,18 @@ color: black;
 
        </div>
 
-
+       {% if poll_total_user == 0 %}
+       <div class="row">
+<div class="col-xl-5">
+<img src="../static/images/pikachu.png">
+</div>
+<div class="col-xl-3" style="transform: translate(0%,40%);">
+  <p> No polls created Yet ! <br>
+  <a href="/createpoll"> Create Now !! </a>
+</p>
+</div>
+</div>
+{% else %}
        <div class="d-sm-flex align-items-center justify-content-between mb-4">
          <h1 class="h3 mb-0 text-gray-800">Top Voted Polls</h1>
 
@@ -205,17 +216,6 @@ color: black;
   <div class="col-md-4">
    
       </div>
-       {% if poll_total_user == 0 %}
-       <div class="row">
-<div class="col-xl-5">
-<img src="../static/images/pikachu.png">
-</div>
-<div class="col-xl-3" style="transform: translate(0%,40%);">
-  <p> No polls created Yet ! <br>
-  <a href="/createpoll"> Create Now !! </a>
-</p>
-</div>
-</div>
 {% endif %}
 {% endblock %}
 

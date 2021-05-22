@@ -280,7 +280,7 @@ def polltovote():
 @login_required
 def search(pollid):
     totalpolls = db.execute("SELECT * FROM poll WHERE pollid=:pollid",{'pollid':pollid}).fetchall()
-    options = db.execute("SELECT * FROM option WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
+    options = db.execute("SELECT * FROM option WHERE pollid=:pollid", {'pollid':pollid}).fetchall()
     print_result = {}
     for x in range(len(totalpolls)):
         p = totalpolls[x]["pollid"]

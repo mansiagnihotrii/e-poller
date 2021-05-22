@@ -273,7 +273,7 @@ color: black;
                {% for k,v in print_result[poll["pollid"]].items()%}
             
 
-                  <h4 class="small font-weight-bold" id="opp"> {{k}}<span class="float-right" style = "color:#e74a3b">{{v}}%</span></h4>
+                  <h4 class="small font-weight-bold" id="opp"> {{v[1]}}<span class="float-right" style = "color:#e74a3b">{{v[0]}}%</span></h4>
 
                   <main>
   <div class="main-content">
@@ -282,7 +282,7 @@ color: black;
 
       <div class="cssProgress">
         <div class="progress2">
-          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: {{v}}%;">
+          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: {{v[0]}}%;">
           </div>
         </div>
       </div>
