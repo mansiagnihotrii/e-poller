@@ -61,7 +61,7 @@ def result(pollid):
             temp = 0
         else:
             temp = round((options[item]["votes"]/totalvotes)*100,2)
-        print_result[options[item]["name"]] = temp
+        print_result[options[item]["option_id"]] = [temp,options[item]["name"]]
     return print_result
 
 #FUNCTION TO SEND EMAIL
@@ -298,7 +298,7 @@ def search(pollid):
             db.execute("UPDATE option SET ended=1 WHERE pollid=:pollid",{'pollid':pollid})
             db.commit()
             return redirect('/search/'+str(pollid ))
-            
+
         if 'voteforpoll' in request.form:
             if pollid in check:
                 error = "Already voted"
