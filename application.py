@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, session, render_template, redirect, request, url_for, flash, jsonify
 from flask_session import Session
+from actions import voteforpoll,checkpoll,result,send_email,username_return
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -35,45 +36,6 @@ Session(epoller)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-#FUNCTION TO INSERT VOTE INTO DATABASE
-def voteforpoll(pollid,option):
-    db.execute("INSERT INTO votes (pollid,user_id,option_id) VALUES(:pollid,:user_id,:option_id)",
-                        {'pollid':pollid, 'user_id':int(session["user_id"]), 'option_id':option})
-    db.execute("UPDATE poll SET totalvotes = totalvotes+1 WHERE pollid=:pollid",{'pollid':pollid})
-    db.execute("UPDATE option SET votes = votes+1 WHERE option_id=:option_id",{'option_id':option})
-    db.commit()
-
-
-#FUNCTION TO CHECK WHETHER USER ALREADY VOTED OR NOT
-def checkpoll():
-    listt=db.execute("SELECT DISTINCT pollid FROM votes WHERE user_id = :user ", {'user': int(session["user_id"])}).fetchall()
-    check=[x[0] for x in listt]
-    return check
-
-
-#FUNCTION TO RETURN RESULT OF A POLL
-def result(pollid):
-    totalvotes = db.execute("SELECT totalvotes FROM poll WHERE pollid=:pollid",{'pollid':pollid}).scalar()
-    options = db.execute("SELECT * FROM option WHERE pollid=:pollid ORDER BY option_id ASC",{'pollid':pollid}).fetchall()
-    print_result = OrderedDict()
-    for item in range(len(options)):
-        if totalvotes == 0:
-            temp = 0
-        else:
-            temp = round((options[item]["votes"]/totalvotes)*100,2)
-        print_result[options[item]["option_id"]] = [temp,options[item]["name"]]
-    return print_result
-
-#FUNCTION TO SEND EMAIL
-def send_email(receiver,message,subject):
-    msg = Message(
-        subject,
-        sender = os.getenv("MAIL_USERNAME"),
-        recipients = receiver
-        )
-    msg.body = message
-    mail.send(msg)
-
 #HOME PAGE
 @epoller.route("/")
 @login_required
@@ -92,8 +54,8 @@ def login():
     if request.method == "GET":
         return render_template("index.html")
     else:
-        row = db.execute("SELECT * FROM users WHERE username = :username", {'username': request.form.get("username")}).fetchall()
-        if len(row) != 1  or not check_password_hash(row[0]["password"], request.form.get("password")):
+        row = username_return(request.form.get("username"))
+        if len(row)!=1  or not check_password_hash(row[0]["password"], request.form.get("password")):
             return render_template("index.html",message = "Invalid username/password")
         session["user_id"] = row[0]["user_id"]
         session["firstname"]=row[0]["firstname"]
@@ -120,22 +82,9 @@ def dashboard():
 def register():
     session.clear()
     if request.method == "POST":
-        if not request.form.get("firstname"):
-            return render_template("register.html", message = "FirstName Missing")
-        if not request.form.get("lastname"):
-            return render_template("register.html", message="LastName Missing")
-        if not request.form.get("username"):
-            return render_template("register.html", message = "Username Missing")
-        if not request.form.get("email"):
-            return render_template("register.html", message="Email Missing")
-        if not request.form.get("aadhar"):
-            return render_template("register.html", message="Aadhar ID Missing")
-        if not request.form.get("password"):
-            return render_template("register.html", message="Password Missing")
         if request.form.get("password") !=  request.form.get("confirmation"):
             return render_template("register.html", message="Password do not match")
-        row = db.execute("SELECT * FROM users WHERE username = :username", {'username': request.form.get("username")}).fetchall()
-        if len(row) != 0:
+        if len(username_return(request.form.get("username")))!=0:
             return render_template("register.html", message = "Username Already Exist")
         else:
             key = db.execute("INSERT INTO users (firstname, lastname, username, email,aadhar,password) VALUES(:firstname, :lastname, :username, :email,:aadhar, :password)",
@@ -168,8 +117,7 @@ def profile():
     if request.method == "GET":
         return render_template("profile.html",details = details,user=session["firstname"],name='profile')
     username = request.form.get("username")
-    row = db.execute("SELECT * FROM users WHERE username = :username", {'username': username}).fetchall()
-    if len(row) != 0:
+    if len(username_return(username))!=0:
         return render_template("profile.html", message = "Username Already Exist",user=session["firstname"],color="danger",details=details,name='profile')
     firstname = request.form.get("firstname")
     lastname = request.form.get("lastname")
@@ -186,6 +134,7 @@ def profile():
     if request.form.get("oldpassword"):
         if not check_password_hash(details[0]["password"], request.form.get("oldpassword")):
             return render_template('profile.html',message = "Old password doesn't match",user=session["firstname"],color="danger",details=details,name='profile')
+
         if not request.form.get("newpassword") == request.form.get("renewpassword"):
             return render_template('profile.html',message = "New passwords doesn't match",user=session["firstname"],color="danger",details=details,name='profile')
         db.execute("UPDATE users SET password =:password WHERE user_id=:user",{'password': generate_password_hash(request.form.get("newpassword"), method='pbkdf2:sha256', salt_length=8),'user': int(session["user_id"])})
@@ -197,7 +146,6 @@ def profile():
     db.commit()
     details = db.execute("SELECT * FROM users WHERE user_id = :user", {'user': int(session["user_id"])}).fetchall()
     return render_template('profile.html',message = "Profile updated Succesfully",details = details,user=session["firstname"],color="success",name='profile')              
-
 
 
 
