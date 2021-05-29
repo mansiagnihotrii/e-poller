@@ -68,6 +68,11 @@
   {{ message }}
 </div>
                 {% endif %}
+                <input
+    type="hidden"
+    name="next"
+    value="{{ request.args.get('next', '') }}"
+/>
               <div class="form-group has-success">
                 <input type="text" class="form-control" name="username" placeholder="Username" required/>
               </div>

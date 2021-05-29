@@ -55,11 +55,15 @@ def login():
         return render_template("index.html")
     else:
         row = username_return(request.form.get("username"))
+        next_url = request.form.get("next")
         if len(row)!=1  or not check_password_hash(row[0]["password"], request.form.get("password")):
             return render_template("index.html",message = "Invalid username/password")
         session["user_id"] = row[0]["user_id"]
         session["firstname"]=row[0]["firstname"]
+        if next_url:
+            return redirect(next_url)
         return redirect("/dashboard")
+        #return redirect("/dashboard")
 
 
 #DASHBOARD
