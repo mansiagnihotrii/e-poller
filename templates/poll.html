@@ -223,7 +223,7 @@ color: black;
                             
                          
                      <div class="form-group has-success">
-                            <input type="radio" id="option1" name="vote" value='{{op["option_id"]}}' required>
+                            <input type="radio" id="option1" name="vote" value='{{op["option_id"]}}'>
                             <label for="option1" id="opp"> {{op["name"]}}</label><br>
 
 
@@ -238,6 +238,9 @@ color: black;
                      {% endfor %}
 
                           {% if type%}
+                          {% if message%}
+       <div class="alert alert-danger" role="alert">  {{message}}</div>
+      {% endif %}
 
                                                   {% if poll["pollid"] in check %}
                                                   <h5 id="status"> Vote submitted !!!</h5>

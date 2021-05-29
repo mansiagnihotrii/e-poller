@@ -42,11 +42,14 @@ def username_return(username):
 
 #FUNCTION TO INSERT VOTE INTO DATABASE
 def voteforpoll(pollid,option):
+    if option is None:
+        return 
     db.execute("INSERT INTO votes (pollid,user_id,option_id) VALUES(:pollid,:user_id,:option_id)",
                         {'pollid':pollid, 'user_id':int(session["user_id"]), 'option_id':option})
     db.execute("UPDATE poll SET totalvotes = totalvotes+1 WHERE pollid=:pollid",{'pollid':pollid})
     db.execute("UPDATE option SET votes = votes+1 WHERE option_id=:option_id",{'option_id':option})
     db.commit()
+    
 
 #FUNCTION TO CHECK WHETHER USER ALREADY VOTED OR NOT
 def checkpoll():
