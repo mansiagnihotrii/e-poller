@@ -1,11 +1,9 @@
-      {% extends "layout.html" %}
-
-      {% block title %} ONGOING POLLS {% endblock %}
-      {% block head %}
-      <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
-      <style>
-
-img{
+{% extends "layout.html" %}
+{% block title %} ONGOING POLLS {% endblock %}
+{% block head %}
+<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'>
+<style>
+    img{
  display: block;
   margin-left: auto;
   margin-right: auto;
@@ -182,190 +180,141 @@ color: black;
 }
 
       </style>
-
-      {% endblock %}
-      {% block content %}
-      <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        {% block heading %}      <h1 class="h3 mb-0 text-gray-800">Ongoing Polls</h1> {% endblock heading %}
-
-      </div>
-      {% if error %}
-       <div class="alert alert-danger" role="alert">  {{error}}</div>
-      {% endif %}
-
-
-                {% if totalpolls %}
-                {% for poll in totalpolls  %}
-
-
-              <div class="row">
-
-                          <!-- Area Chart -->
-                          <div class="col-xl-8 col-lg-7" style="overflow: overlay;">
-                            <div class="card shadow mb-4" style="min-width: 400px;">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background: linear-gradient(90deg,#224abe 10%,#191818 100%); color:white;">
-                      <h3 class="h3 mb-0 text-gray-800" style="color: white; font-size: 120%; font-weight:700; overflow: hidden; padding-right: 30px; ">{{poll["question"]}}</h3>
-                  <h6 class="m-0 font-weight-bold text-primary" style="color: #a4b8f1 !important;">Poll ID : {{poll["pollid"]}}</h6>
-
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-area">
-
-                    {% block form %}    <form method="post" action="/pollscreated/ongoing">  {% endblock form %}
-
-
-                     
-                            <input type="hidden" name="pollid" value='{{poll["pollid"]}}'>
-                     
-                            {% for op in options %}
-                            {% if op["pollid"] == poll["pollid"]%}
-                            
-                         
-                     <div class="form-group has-success">
+{% endblock %}
+{% block content %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    {% block heading %} <h1 class="h3 mb-0 text-gray-800">Ongoing Polls</h1> {% endblock heading %}
+</div>
+{% if error %}
+<div class="alert alert-danger" role="alert"> {{error}}</div>
+{% endif %}
+{% if totalpolls %}
+{% for poll in totalpolls %}
+<div class="row">
+    <!-- Area Chart -->
+    <div class="col-xl-8 col-lg-7" style="overflow: overlay;">
+        <div class="card shadow mb-4" style="min-width: 400px;">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="background: linear-gradient(90deg,#224abe 10%,#191818 100%); color:white;">
+                <h3 class="h3 mb-0 text-gray-800" style="color: white; font-size: 120%; font-weight:700; overflow: hidden; padding-right: 30px; ">{{poll["question"]}}</h3>
+                <h6 class="m-0 font-weight-bold text-primary" style="color: #a4b8f1 !important;">Poll ID : {{poll["pollid"]}}</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="chart-area">
+                    {% block form %} <form method="post" action="/pollscreated/ongoing"> {% endblock form %}
+                        <input type="hidden" name="pollid" value='{{poll["pollid"]}}'>
+                        {% for op in options %}
+                        {% if op["pollid"] == poll["pollid"]%}
+                        <div class="form-group has-success">
                             <input type="radio" id="option1" name="vote" value='{{op["option_id"]}}'>
                             <label for="option1" id="opp"> {{op["name"]}}</label><br>
-
-
-                     
-
-
- 
-                    </div>
-{% endif %}
-                      
-               
-                     {% endfor %}
-
-                          {% if type%}
-                          {% if message%}
-       <div class="alert alert-danger" role="alert">  {{message}}</div>
-      {% endif %}
-
-                                                  {% if poll["pollid"] in check %}
-                                                  <h5 id="status"> Vote submitted !!!</h5>
-                                           <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" disabled >Vote</button>
-                                                  {% else %}
-                                            <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
-                                                  {% endif %}
-<form>
-                                          <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
-                                        </form>
-                                        {% else %}
-                              {% block button %}   {% endblock button %}
-                              {% endif %}
-
-
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% if type%}
+                        {% if message%}
+                        <div class="alert alert-danger" role="alert"> {{message}}</div>
+                        {% endif %}
+                        {% if poll["pollid"] in check %}
+                        <h5 id="status"> Vote submitted !!!</h5>
+                        <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" disabled>Vote</button>
+                        {% else %}
+                        <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
+                        {% endif %}
+                        <form>
+                            <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
+                        </form>
+                        {% else %}
+                        {% block button %} {% endblock button %}
+                        {% endif %}
                     </form>
-
-
-
-                  </div>
                 </div>
-              </div>
             </div>
-          
-            <div class="col-xl-4 col-lg-5">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Result</h6>
-                </div>
-                <div class="card-body">
-                  
-           
-               {% for k,v in print_result[poll["pollid"]].items()%}
-            
-
-                  <h4 class="small font-weight-bold" id="opp"> {{v[1]}}<span class="float-right" style = "color:#e74a3b">{{v[0]}}%</span></h4>
-
-                  <main>
-  <div class="main-content">
-
-    <div id="bar" class="examples">
-
-      <div class="cssProgress">
-        <div class="progress2">
-          <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: {{v[0]}}%;">
-          </div>
         </div>
-      </div>
-
     </div>
-
-
-
-  </div>
-</main>
-
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Result</h6>
+            </div>
+            <div class="card-body">
+                {% for k,v in print_result[poll["pollid"]].items()%}
+                <h4 class="small font-weight-bold" id="opp"> {{v[1]}}<span class="float-right" style="color:#e74a3b">{{v[0]}}%</span></h4>
+                <main>
+                    <div class="main-content">
+                        <div id="bar" class="examples">
+                            <div class="cssProgress">
+                                <div class="progress2">
+                                    <div class="cssProgress-bar cssProgress-active cssProgress-active" data-percent="100" style="width: {{v[0]}}%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
 {% endfor %}
-                  </div>
-              </div>
-            </div>
-        
-            </div>
-            <br><br>
-
-
-          {% endfor %}
-          {% else %}
-
-                 <div class="row">
-<div class="col-xl-5">
-<img src="../static/images/Doge-Crying.png">
+{% else %}
+<div class="row">
+    <div class="col-xl-5">
+        <img src="../static/images/Doge-Crying.png">
+    </div>
+    <div class="col-xl-3 " style="transform: translate(0%,40%);">
+        <p> Poll Not Found <br>
+        </p>
+    </div>
 </div>
-<div class="col-xl-3 "  style="transform: translate(0%,40%);">
-  <p> Poll Not Found <br>
+{% endif %}
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'>
+</script>
+<script>
+$(document).ready(function() {
 
-</p>
-</div>
-</div>
-          {% endif %}
-            <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'>
-  </script>
-
-  <script>
-    $(document).ready(function() {
-
-  $('#bar').progress_fnc();
+    $('#bar').progress_fnc();
 
 });
 
 
 (function($) {
 
-  $.fn.progress_fnc = function(options) {
-    var settings = $.extend({
-      type: 'start'
-    }, options);
+    $.fn.progress_fnc = function(options) {
+        var settings = $.extend({
+            type: 'start'
+        }, options);
 
-    var div = $(this);
-    var progress = div.find('.cssProgress');
+        var div = $(this);
+        var progress = div.find('.cssProgress');
 
-    progress.each(function() {
-      var self = $(this);
-      var progress_bar = self.find('.cssProgress-bar');
-      var progress_label = self.find('.cssProgress-label, .cssProgress-label2');
-      var progress_value = progress_bar.data('percent');
-      var percentage = parseInt(progress_value, 10) + '%';
+        progress.each(function() {
+            var self = $(this);
+            var progress_bar = self.find('.cssProgress-bar');
+            var progress_label = self.find('.cssProgress-label, .cssProgress-label2');
+            var progress_value = progress_bar.data('percent');
+            var percentage = parseInt(progress_value, 10) + '%';
 
-      progress_bar.css({'width': '0%', 'transition': 'none', '-webkit-transition': 'none', '-moz-transition': 'none'});
+            progress_bar.css({ 'width': '0%', 'transition': 'none', '-webkit-transition': 'none', '-moz-transition': 'none' });
 
-      if(settings.type == 'start') {
+            if (settings.type == 'start') {
 
-        progress_bar.animate({
-          width: percentage
-        }, {
-          duration: 1000,
-          step: function(x) {
-            progress_label.text(Math.round(x) + '%');
-          }
+                progress_bar.animate({
+                    width: percentage
+                }, {
+                    duration: 1000,
+                    step: function(x) {
+                        progress_label.text(Math.round(x) + '%');
+                    }
+                });
+
+            }
+
         });
-
-      } 
-
-    });
-  }
+    }
 
 }(jQuery));
-  </script>
+</script>
 {% endblock content %}

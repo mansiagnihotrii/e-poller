@@ -1,128 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="https://img.icons8.com/nolan/64/survey.png">
-		<link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <title>Register To e-Poller !</title>
     <link href="{{ url_for('static', filename='css/rainbow.css') }}" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css'>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+</head>
 
-
-  </head>
-
-  <body>
-
-<div id="container">
-<div id="over_stuff">
-   {% if message %}
-                
-        <div class="alert alert-danger" role="alert" style="transform: translate(250px,80px);">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  {{ message }}
-</div>
-                {% endif %}
-
-<div class='signup-container'>
-  <div class='left-container'>
-    
-   
-    <img src="../static/images/registertag.png" >
- 
-  </div>
-  <div class='right-container'>
-<header>
-      <h1><u>Sign Up</u></h1>
- <form method="post" action="{{ url_for('register') }}">
-      <div class="set">
-        <div class="firstname">
-          <label for="firstname">First Name</label>
-          <input name="firstname" id="firstname"  type="text" required>
+<body>
+    <div id="container">
+        <div id="over_stuff">
+            {% if message %}
+            <div class="alert alert-danger" role="alert" style="transform: translate(250px,80px);">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                {{ message }}
+            </div>
+            {% endif %}
+            <div class='signup-container'>
+                <div class='left-container'>
+                    <img src="../static/images/registertag.png">
+                </div>
+                <div class='right-container'>
+                    <header>
+                        <h1><u>Sign Up</u></h1>
+                        <form method="post" action="{{ url_for('register') }}">
+                            <div class="set">
+                                <div class="firstname">
+                                    <label for="firstname">First Name</label>
+                                    <input name="firstname" id="firstname" type="text" required>
+                                </div>
+                                <div class="lastname">
+                                    <label for="lastname">Last Name</label>
+                                    <input name="lastname" id="lastname" type="text" required>
+                                </div>
+                            </div>
+                            <div class="set">
+                                <div class="username">
+                                    <label for="username">Username</label>
+                                    <input name="username" id="username" type="text" required>
+                                </div>
+                                <div class="email">
+                                    <label for="email">Email Address</label>
+                                    <input name="email" id="email" type="email" required>
+                                </div>
+                            </div>
+                            <div class="set">
+                                <div class="aadhar">
+                                    <label for="aadhar">Aadhar ID</label>
+                                    <input name="aadhar" id="aadhar" type="text" minlength="12" maxlength="12" required>
+                                </div>
+                            </div>
+                            <div class="set">
+                                <div class="password">
+                                    <label for="password">Password</label>
+                                    <input name="password" id="password" type="password" required>
+                                    <i class="fas fa-eye" id="togglePassword" style="margin-left: -13%;color: grey;cursor: pointer;"></i>
+                                </div>
+                                <div class="password">
+                                    <label for="password">Repeat Password</label>
+                                    <input name="confirmation" id="confirmation" type="password" required>
+                                    <i class="fas fa-eye" id="togglePasswordrepeat" style="margin-left: -13%;color: grey;cursor: pointer;"></i>
+                                </div>
+                            </div>
+                            <footer>
+                                <div class='set'>
+                                    <input id="next" type="submit" value="Sign Up" />
+                                </div>
+                            </footer>
+                        </form>
+                    </header>
+                </div>
+            </div>
         </div>
-<div class="lastname">
-          <label for="lastname">Last Name</label>
-          <input name="lastname" id="lastname"  type="text" required>
-        </div>
-      </div>
-      <div class="set">
-        <div class="username">
-          <label for="username">Username</label>
-          <input name="username" id="username"  type="text" required>
-        </div>
-        <div class="email">
-          <label for="email">Email Address</label>
-          <input name="email" id="email"  type="email" required>
-        </div>
-      </div>
-            <div class="set">
-        <div class="aadhar">
-          <label for="aadhar">Aadhar ID</label>
-          <input name="aadhar" id="aadhar"  type="text" minlength="12" maxlength="12" required>
-        </div>
-</div>
-   
-          <div class="set">
-        <div class="password">
-          <label for="password">Password</label>
-          <input name="password" id="password"  type="password" required>
-          <i class="fas fa-eye" id="togglePassword" style="margin-left: -13%;color: grey;cursor: pointer;"></i>
-        </div>
-        <div class="password">
-          <label for="password">Repeat Password</label>
-          <input name="confirmation" id="confirmation"  type="password" required>
-          <i class="fas fa-eye" id="togglePasswordrepeat" style="margin-left: -13%;color: grey;cursor: pointer;"></i>
-        </div>
-      </div>
-       <footer>
-       <div class='set'>
-        <input id="next" type="submit" value="Sign Up" />
-      
-      </div>
-        </footer>
-
-    </form>
-    </header>
-   
-     
-  
-  </div>
-</div>
-
-
-</div>
-
-<canvas id="c"></canvas>
-</div>
+        <canvas id="c"></canvas>
+    </div>
     <script src="{{ url_for('static', filename='js/rainbow.js') }}"></script>
-       <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
-       <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
-       <script type="text/javascript">
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
-        const confirmation = document.querySelector('#confirmation');
-        const togglePasswordrepeat = document.querySelector('#togglePasswordrepeat');
+    <script src="{{ url_for("static", filename="js/jquery.min.js") }}"></script>
+    <script src="{{ url_for("static", filename="js/bootstrap.bundle.min.js") }}"></script>
+    <script type="text/javascript">
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    const confirmation = document.querySelector('#confirmation');
+    const togglePasswordrepeat = document.querySelector('#togglePasswordrepeat');
 
-        togglePassword.addEventListener('click',function (e){
-          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-         
-          password.setAttribute('type',type);
-       
-          this.classList.toggle('fa-eye-slash');
-        });
+    togglePassword.addEventListener('click', function(e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
 
-        togglePasswordrepeat.addEventListener('click',function (e){
-          const con = confirmation.getAttribute('type') === 'password' ? 'text' : 'password';
-          confirmation.setAttribute('type',con);
-          this.classList.toggle('fa-eye-slash');
-        });
-       </script>
+        password.setAttribute('type', type);
+
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    togglePasswordrepeat.addEventListener('click', function(e) {
+        const con = confirmation.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmation.setAttribute('type', con);
+        this.classList.toggle('fa-eye-slash');
+    });
+    </script>
 </body>
+
 </html>

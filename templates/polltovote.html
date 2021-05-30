@@ -1,25 +1,21 @@
-         {% extends "poll.html" %}
-
-         {% block title %} VOTE {% endblock %}
-                 {% block heading %}      <h1 class="h3 mb-0 text-gray-800">Vote for poll</h1> {% endblock heading %}
-
-
-           {% block form %}    <form method="post" action="{{ url_for('search',pollid=totalpolls[0]["pollid"] ) }}">  {% endblock form %}
-                     {% block button %}
-
-                     {% if totalpolls %}
-{%for poll in totalpolls%}
-                   {% if end==0 %}
-                      {% if poll["pollid"] in check %}
-                      <h5 id="status"> Vote submitted !!!</h5>
-               <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" disabled>Vote</button>
-                      {% else %}
-                <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
-                      {% endif %}
-                        {% if hide == 1 %}
-                              <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
-                        {% endif %}
-                       {% endif %}
-      {% endfor %}
-            {% endif %}
-               {% endblock button %}
+{% extends "poll.html" %}
+{% block title %} VOTE {% endblock %}
+{% block heading %} <h1 class="h3 mb-0 text-gray-800">Vote for poll</h1> {% endblock heading %}
+{% block form %} <form method="post" action="{{ url_for('search',pollid=totalpolls[0]["pollid"] ) }}"> {% endblock form %}
+    {% block button %}
+    {% if totalpolls %}
+    {%for poll in totalpolls%}
+    {% if end==0 %}
+    {% if poll["pollid"] in check %}
+    <h5 id="status"> Vote submitted !!!</h5>
+    <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" disabled>Vote</button>
+    {% else %}
+    <button class="btn btn-lg btn-success btn-block" style="margin-top: .5rem;" id='{{ poll["pollid"]}}' type="submit" name="voteforpoll">Vote</button>
+    {% endif %}
+    {% if hide == 1 %}
+    <button class="btn btn-lg btn-success btn-block" id='endpoll' type="submit" name="end" onclick="alert('Poll Ended successfully !!!')">End poll</button>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endblock button %}

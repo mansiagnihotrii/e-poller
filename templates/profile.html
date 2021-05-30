@@ -1,158 +1,128 @@
 {% extends "layout.html" %}
 {% block title %} PROFILE {% endblock %}
 {%block head%}
-  <link href="/static/css/material-dashboard.css"rel="stylesheet">
-       {% endblock %}
-
-
-    {% block content%}
-    {% if message %}
-
-      <div class="alert alert-{{color}}" role="alert">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  {{ message }}
+<link href="/static/css/material-dashboard.css" rel="stylesheet">
+{% endblock %}
+{% block content%}
+{% if message %}
+<div class="alert alert-{{color}}" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{ message }}
 </div>
-      {% endif %}
-      
-
-     <div class="content">
-        <div class="container-fluid">
-          <div class="row">
+{% endif %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
             <div class="col-md-8">
-              <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Edit Profile</h4>
-                  <p class="card-category">Complete your profile</p>
-                </div>
-                <div class="card-body">
-                  <form method="post" action="{{ url_for('profile') }}">
-                    <div class="row">
-          
-                      <div class="col-md-3">
-                        <div class="form-group">
-                        <label>Username</label>
-                        <div class="form-group">
-                          <label class="bmd-label-floating">{{details[0]["username"]}}</label>
-                          <input type="text" class="form-control" name="username">
-                        </div>
-                      </div>
-                      </div>
-                      <div class="col-md-4">
-                              <div class="form-group">
-                          <label>Email Address</label>
-                          <div class="form-group">
-                             <label class="bmd-label-floating">{{ details[0]["email"] }}</label>
-                          <input type="email" class="form-control" name="email">   
-                          </div>
-                        </div>
-                          
-                          
-                          
-                
-                      </div>
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">Edit Profile</h4>
+                        <p class="card-category">Complete your profile</p>
                     </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                        <label>First Name</label>
-                        <div class="form-group">
-                          <label class="bmd-label-floating">{{ details[0]["firstname"] }}</label>
-                          <input type="text" class="form-control" name="firstname">
-                        </div>
-                      </div>
-                      </div>
-                      
-               
-
-                   
-                      <div class="col-md-4">
-                        <div class="form-group">
-                        <label>Last Name</label>
-                        <div class="form-group">
-                          <label class="bmd-label-floating">{{ details[0]["lastname"] }}</label>
-                          <input type="text" class="form-control" name="lastname">
-                        </div>
-                      </div>
-                      </div>
-                           </div>
-                           
-                     <div class="row">
-                                        <div class="col-md-6">
-                        <div class="form-group">
-                        <label>Aadhar ID</label>
-                        <div class="form-group">
-                          <label class="bmd-label-floating">xxxx xxxx xxxx</label>
-                          <input type="text" class="form-control" name="aadhar" minlength="12" maxlength="12">
-                        </div>
-                      </div>
-                      </div>
-                      </div>
-                    <button type="submit" class="bttn bttn-primary pull-right">Update Profile</button>
-                    <div class="clearfix"></div>
-                  </form>
+                    <div class="card-body">
+                        <form method="post" action="{{ url_for('profile') }}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Username</label>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">{{details[0]["username"]}}</label>
+                                            <input type="text" class="form-control" name="username">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">{{ details[0]["email"] }}</label>
+                                            <input type="email" class="form-control" name="email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">{{ details[0]["firstname"] }}</label>
+                                            <input type="text" class="form-control" name="firstname">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">{{ details[0]["lastname"] }}</label>
+                                            <input type="text" class="form-control" name="lastname">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Aadhar ID</label>
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">xxxx xxxx xxxx</label>
+                                            <input type="text" class="form-control" name="aadhar" minlength="12" maxlength="12">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="bttn bttn-primary pull-right">Update Profile</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
                 </div>
-              </div>
             </div>
-            
-            
             <div class="col-md-4">
-                           <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Change Password</h4>
-                
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title">Change Password</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="{{ url_for('profile') }}">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Old Password</label>
+                                        <input type="password" class="form-control" name="oldpassword" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">New Password</label>
+                                        <input type="password" class="form-control" name="newpassword" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">New Password Again</label>
+                                        <input type="password" class="form-control" name="renewpassword" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="bttn bttn-primary pull-right">Update Password</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                  <form method="post" action="{{ url_for('profile') }}">
-                    <div class="row">
-          
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Old Password</label>
-                          <input type="password" class="form-control" name="oldpassword" required>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="row">
-          
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">New Password</label>
-                          <input type="password" class="form-control" name="newpassword" required>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="row">
-          
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">New Password Again</label>
-                          <input type="password" class="form-control" name="renewpassword" required>
-                        </div>
-                      </div>
-
-                    </div>
-    
-                   
-                    <button type="submit" class="bttn bttn-primary pull-right">Update Password</button>
-                    <div class="clearfix"></div>
-                  </form>
-                </div>
-              </div>
             </div>
-            
-            
-          </div>
         </div>
-      </div>
-      
+    </div>
+</div>
 <script>
 window.setTimeout(function() {
-    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove(); 
+    $(".alert").fadeTo(500, 0).slideUp(500, function() {
+        $(this).remove();
     });
 }, 4000);
-
 </script>
 {% endblock %}

@@ -1,76 +1,54 @@
 {% extends "layout.html" %}
 {% block title %} FAQs {% endblock %}
 {%block head%}
-  <link href="/static/css/faq.css"rel="stylesheet">
-
-       {% endblock %}
-
-
-    {% block content%}
-    <div class="container contact-form">
-              <div class="contact-image">
-               <h2>Frequently Asked Questions</h2>
+<link href="/static/css/faq.css" rel="stylesheet">
+{% endblock %}
+{% block content%}
+<div class="container contact-form">
+    <div class="contact-image">
+        <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="accordion">
+        <div class="accordion-item">
+            <button id="accordion-button-1" aria-expanded="false"><span class="accordion-title">What are online polls?</span><span class="icon" aria-hidden="true"></span></button>
+            <div class="accordion-content">
+                <p>An online poll is a survey in which participants communicate responses via the internet, typically by completing a set of questions on a web page. The online poll creator can either keep it open for everyone to answer or for a selected group of people.</p>
             </div>
-
-  <div class="accordion">
-    <div class="accordion-item">
-      <button id="accordion-button-1" aria-expanded="false"><span class="accordion-title">What are online polls?</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>An online poll is a survey in which participants communicate responses via the internet, typically by completing a set of questions on a web page. The online poll creator can either keep it open for everyone to answer or for a selected group of people.</p>
-      </div>
+        </div>
+        <div class="accordion-item">
+            <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">Why create free online polls?</span><span class="icon" aria-hidden="true"></span></button>
+            <div class="accordion-content">
+                <p>
+                    <ul>
+                        <li>Collect lot of data with less resources</li>
+                        <li>Get feedback instantly</li>
+                        <li>Reach a wider audience</li>
+                        <li>Easy to distribute & respond</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">How many times can one vote on a single poll?</span><span class="icon" aria-hidden="true"></span></button>
+            <div class="accordion-content">
+                <p>An individual can vote only <strong> single</strong> time on a poll.</p>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button id="accordion-button-4" aria-expanded="false"><span class="accordion-title">Can I end the polls that I didn't created</span><span class="icon" aria-hidden="true"></span></button>
+            <div class="accordion-content">
+                <p>Only the individual who created the poll has the authority to end it.You can check the results,though.</p>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button id="accordion-button-5" aria-expanded="false"><span class="accordion-title">How do submit my feedbacks / complaints / suggestions to E-poller?</span><span class="icon" aria-hidden="true"></span></button>
+            <div class="accordion-content">
+                <p>You can submit all your feedbacks / complaints / suggestions via our<a href="/contact"> Contact </a>page. </p>
+            </div>
+        </div>
     </div>
-    <div class="accordion-item">
-      <button id="accordion-button-2" aria-expanded="false"><span class="accordion-title">Why create free online polls?</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p><ul>
-        <li>Collect lot of data with less resources</li>
-        <li>Get feedback instantly</li>
-        <li>Reach a wider audience</li>
-        <li>Easy to distribute & respond</li>
-        </ul>
-        </p>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">How many times can one vote on a single poll?</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>An individual can vote only <strong> single</strong> time on a poll.</p>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <button id="accordion-button-4" aria-expanded="false"><span class="accordion-title">Can I end the polls that I didn't created</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>Only the individual who created the poll has the authority to end it.You can check the results,though.</p>
-      </div>
-    </div>
-    <div class="accordion-item">
-      <button id="accordion-button-5" aria-expanded="false"><span class="accordion-title">How do submit my feedbacks / complaints / suggestions to E-poller?</span><span class="icon" aria-hidden="true"></span></button>
-      <div class="accordion-content">
-        <p>You can submit all your feedbacks / complaints / suggestions via our<a href="/contact"> Contact </a>page. </p>
-      </div>
-    </div>
-  </div>
 </div>
 <!-- partial -->
-  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
-  
-  <script src="{{ url_for("static", filename="js/faq.js") }}"></script>
-
-    
-    
-    {% endblock %}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src="{{ url_for("static", filename="js/faq.js") }}"></script>
+{% endblock %}

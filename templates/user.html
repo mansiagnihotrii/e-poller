@@ -1,218 +1,191 @@
 {% extends "layout.html" %}
 {% block title %} DASHBOARD {% endblock %}
 {%block head%}
- <link href="/static/css/dash.css" rel="stylesheet">
+<link href="/static/css/dash.css" rel="stylesheet">
 <style>
-
-img{
- display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
 
 }
 
-p{
-font-family: system-ui;
-font-size: 1.3rem;
-color: black;
+p {
+    font-family: system-ui;
+    font-size: 1.3rem;
+    color: black;
 }
 
 .pollid_hover {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 
 
 }
 
 .pollid_hover .question_hover {
-  visibility: hidden;
-  white-space: nowrap; 
-  width: 300%; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-  background-image: linear-gradient(180deg,#000000 10%,#224abe 100%);
-  opacity: 0.8;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  top: -5px;
-  left: 105%;
-  position: absolute;
-  z-index: 1;
+    visibility: hidden;
+    white-space: nowrap;
+    width: 300%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-image: linear-gradient(180deg, #000000 10%, #224abe 100%);
+    opacity: 0.8;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    top: -5px;
+    left: 105%;
+    position: absolute;
+    z-index: 1;
 }
 
 .pollid_hover:hover .question_hover {
-  visibility: visible;
+    visibility: visible;
 }
+
 .pollid_hover .question_hover::after {
-  content: " ";
-  position: absolute;
-  top: 50%;
-  right: 100%; /* To the left of the pollid_hover */
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent #224abe transparent transparent;
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    /* To the left of the pollid_hover */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #224abe transparent transparent;
 }
-    
-  </style>
-       {% endblock %}
-
-
-    {% block content%}
-
-
-
-     <!-- Begin Page Content -->
-
-
-       <!-- Page Heading-->
-       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-
-       </div>
-
-       <!-- Content Row -->
-       <div class="row">
-
-         <!-- TOTAL POLLS -->
-         <div class="col-xl-3 col-md-6 mb-4">
-           <div class="card border-left-primary shadow h-100 py-2">
-             <div class="card-body">
-               <div class="row no-gutters align-items-center">
-                 <div class="col mr-2">
-                   <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL POLLS CREATED</div>
-                   <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_total_user}}</div>
-                 </div>
-                 <div class="col-auto">
-                   <span style="font-size:2em;color:#4e73df;">
-                   <i class="fa fa-poll"></i>
-    							</span>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-
-         <!-- ONGOING POLLS -->
-         <div class="col-xl-3 col-md-6 mb-4">
-           <div class="card border-left-warning shadow h-100 py-2">
-             <div class="card-body">
-               <div class="row no-gutters align-items-center">
-                 <div class="col mr-2">
-                   <a href="/pollscreated/ongoing" class="text-xs font-weight-bold text-warning text-uppercase mb-1">ONGOING POLLS</a> 
-                   <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_ongoing}}</div>
-                 </div>
-                 <div class="col-auto">
-                   <span style="font-size:2em;color:#f6c23e;">
-                   <i class="fa fa-clock"></i>
-    </span>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-
-         <!-- ENDED POLLS -->
-         <div class="col-xl-3 col-md-6 mb-4">
-           <div class="card border-left-info shadow h-100 py-2">
-             <div class="card-body">
-               <div class="row no-gutters align-items-center">
-                 <div class="col mr-2">
-                   <a href="/pollscreated/ended" class="text-xs font-weight-bold text-success text-uppercase mb-1">ENDED POLL</a>
-                   <div class="row no-gutters align-items-center">
-                     <div class="col-auto">
-                       <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{poll_ended}}</div>
-                     </div>
-                     </div>
-                 </div>
-                 <div class="col-auto">
-                   <span style="font-size:2em;color:#36b9cc;">
-                   <i class="fa fa-check-circle"></i>
-    </span>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-
-       </div>
-
-       {% if poll_total_user == 0 %}
-       <div class="row">
-<div class="col-xl-5">
-<img src="../static/images/pikachu.png">
+</style>
+{% endblock %}
+{% block content%}
+<!-- Begin Page Content -->
+<!-- Page Heading-->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 </div>
-<div class="col-xl-3" style="transform: translate(0%,40%);">
-  <p> No polls created Yet ! <br>
-  <a href="/createpoll"> Create Now !! </a>
-</p>
+<!-- Content Row -->
+<div class="row">
+    <!-- TOTAL POLLS -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL POLLS CREATED</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_total_user}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <span style="font-size:2em;color:#4e73df;">
+                            <i class="fa fa-poll"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ONGOING POLLS -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <a href="/pollscreated/ongoing" class="text-xs font-weight-bold text-warning text-uppercase mb-1">ONGOING POLLS</a>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{poll_ongoing}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <span style="font-size:2em;color:#f6c23e;">
+                            <i class="fa fa-clock"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ENDED POLLS -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <a href="/pollscreated/ended" class="text-xs font-weight-bold text-success text-uppercase mb-1">ENDED POLL</a>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{poll_ended}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <span style="font-size:2em;color:#36b9cc;">
+                            <i class="fa fa-check-circle"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% if poll_total_user == 0 %}
+<div class="row">
+    <div class="col-xl-5">
+        <img src="../static/images/pikachu.png">
+    </div>
+    <div class="col-xl-3" style="transform: translate(0%,40%);">
+        <p> No polls created Yet ! <br>
+            <a href="/createpoll"> Create Now !! </a>
+        </p>
+    </div>
 </div>
 {% else %}
-       <div class="d-sm-flex align-items-center justify-content-between mb-4">
-         <h1 class="h3 mb-0 text-gray-800">Top Voted Polls</h1>
-
-       </div>
-
-       <!-- Content Row -->
-     
-
-       <div class="row">
-  <div class="col-md-8">
-<div class="box box-info">
-
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Top Voted Polls</h1>
+</div>
+<!-- Content Row -->
+<div class="row">
+    <div class="col-md-8">
+        <div class="box box-info">
             <!-- /.box-header -->
             <div class="box-body">
-              <div class="table-responsive">
-                <table class="table no-margin">
-                  <thead>
-                  <tr>
-                    <th>Poll ID</th>
-                    <th>Votes</th>
-                    <th>Status</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                 {% set count = 5 %}
-                 {% if poll_total_user < 6 %}
-                    {% set count = poll_total_user %}
-                 {% endif %}
-                      {% for i in range(count) %}
-                    
-    
-                  <tr>
-                    <td><div class="pollid_hover"><a href="/search/{{temp[i]['pollid']}}" style="padding:10px;">{{temp[i]["pollid"]}}</a>
-                      <span class="question_hover">
-                        {{temp[i]["question"]}}
-                      </span>
-
-                    </div></td>
-                    <td>{{temp[i]["totalvotes"]}}</td>
-                    {% if temp[i]["ended"] == 1 %}
-                    <td><span class="label label-success" style="padding: .2em .6em .3em;    border-radius: .25em;">Ended</span></td>
-                    {% else%}
-                    <td><span class="label label-warning" style="padding: .2em .6em .3em;    border-radius: .25em;">Ongoing</span></td>
-                    {% endif %}
-                    <td>
-                      <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
-                    </td>
-                  </tr>
-                   
-       {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.table-responsive -->
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <tr>
+                                <th>Poll ID</th>
+                                <th>Votes</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set count = 5 %}
+                            {% if poll_total_user < 6 %} {% set count=poll_total_user %} {% endif %} {% for i in range(count) %} <tr>
+                                <td>
+                                    <div class="pollid_hover"><a href="/search/{{temp[i]['pollid']}}" style="padding:10px;">{{temp[i]["pollid"]}}</a>
+                                        <span class="question_hover">
+                                            {{temp[i]["question"]}}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{temp[i]["totalvotes"]}}</td>
+                                {% if temp[i]["ended"] == 1 %}
+                                <td><span class="label label-success" style="padding: .2em .6em .3em;    border-radius: .25em;">Ended</span></td>
+                                {% else%}
+                                <td><span class="label label-warning" style="padding: .2em .6em .3em;    border-radius: .25em;">Ongoing</span></td>
+                                {% endif %}
+                                <td>
+                                    <div class="sparkbar" data-color="#00a65a" data-height="20"><canvas width="34" height="20" style="display: inline-block; width: 34px; height: 20px; vertical-align: top;"></canvas></div>
+                                </td>
+                                </tr>
+                                {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->
-
             <!-- /.box-footer -->
-          </div>
-</div>
+        </div>
+    </div>
 </div>
 {% endif %}
 {% endblock %}
-
