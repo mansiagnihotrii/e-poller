@@ -164,7 +164,8 @@ def polls():
                   
         temp = request.form.getlist("option")
         for name in temp:   
-          db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
+          if name is not '':
+            db.execute("INSERT INTO option (pollid,name,user_id) VALUES(:pollid,:name,:user_id)",
                       {'pollid':poll_detail+1, 'name': name,'user_id':int(session["user_id"])})         
         db.commit()
         url = "/search/"+str(int(poll_detail+1))
