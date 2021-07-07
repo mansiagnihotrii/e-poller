@@ -20,7 +20,7 @@ def main():
     db.execute("CREATE TABLE option (option_id SERIAL PRIMARY KEY, name VARCHAR NOT NULL,pollid INTEGER NOT NULL,user_id INTEGER NOT NULL REFERENCES users(user_id),ended INTEGER DEFAULT 0,votes INTEGER DEFAULT 0)")
     
     #TABLE TO STORE VOTES INFORMATION
-    db.execute("CREATE TABLE votes (pollid INTEGER NOT NULL REFERENCES poll(pollid),user_id INTEGER NOT NULL REFERENCES users(user_id),option_id INTEGER NOT NULL)")
+    db.execute("CREATE TABLE votes (pollid INTEGER NOT NULL REFERENCES poll(pollid),user_id INTEGER NOT NULL REFERENCES users(user_id),option_id INTEGER NOT NULL REFERENCES option(option_id)")
     
     #TABLE TO STORE MESSAGES RECEIVED FROM USER
     db.execute("CREATE TABLE contact (firstname VARCHAR NOT NULL,lastname VARCHAR NOT NULL,message VARCHAR NOT NULL,email VARCHAR NOT NULL)")

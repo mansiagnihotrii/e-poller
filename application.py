@@ -13,7 +13,8 @@ from flask_mail import Mail,Message
 epoller= Flask(__name__)
 mail = Mail(epoller)
 
-#configuration of Mail
+
+#CONFIGURATION OF MAIL
 epoller.config['MAIL_SERVER']='smtp.gmail.com'
 epoller.config['MAIL_PORT'] = 465
 epoller.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
@@ -22,18 +23,23 @@ epoller.config['MAIL_USE_TLS'] = False
 epoller.config['MAIL_USE_SSL'] = True
 mail = Mail(epoller)
 
+
 # CHECK FOR ENVIRONMENT VARIABLES
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
+
 
 # CONFIGURE SESSION TO USE FILESYSTEM
 epoller.config["SESSION_PERMANENT"] = False
 epoller.config["SESSION_TYPE"] = "filesystem"
 Session(epoller)
 
+
 # SET UP DATABASE
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
+
+
 
 #HOME PAGE
 @epoller.route("/")
@@ -44,6 +50,7 @@ def index():
         return render_template("index.html",user=user)
     else:
        return redirect("/login")
+
 
 
 #LOGIN PAGE
@@ -62,7 +69,7 @@ def login():
         if next_url:
             return redirect(next_url)
         return redirect("/dashboard")
-        #return redirect("/dashboard")
+
 
 
 #DASHBOARD
@@ -110,6 +117,7 @@ def logout():
     flash('We hope to see you again!')
     session.clear()
     return redirect("/")
+
 
 
 #PROFILE
@@ -172,6 +180,8 @@ def polls():
         return redirect(url)
     return render_template("create_poll.html",poll_total=poll_total,name='polls',user=session["firstname"])
 
+
+
 #CREATED POLLS
 @epoller.route('/pollscreated/ongoing',methods=['GET','POST'])
 @login_required
@@ -216,6 +226,7 @@ def endedpolls():
     return render_template("/pollended.html",user=session["firstname"],totalpolls=totalpolls,options=options,print_result=print_result,name='polls')
  
 
+
 #VOTE FOR OTHER POLLS
 @epoller.route('/polltovote',methods=['GET','POST'])
 @login_required
@@ -225,6 +236,7 @@ def polltovote():
     else:           
         pollid=request.form.get("pollid")
         return redirect(url_for('search', pollid=pollid)) 
+
 
 
 #VOTE FOR OTHER POLLS        
@@ -263,6 +275,7 @@ def search(pollid):
         return render_template("polltovote.html",message="Not found",user=session["firstname"],name='polls',print_result=print_result,error=error)
 
 
+
 #CONTACT PAGE
 @epoller.route('/contact',methods=['GET','POST'])
 @login_required
@@ -283,15 +296,21 @@ def contact():
     return render_template("contact.html",user=session["firstname"],message = "Message sent successfully !",name='contact')        
 
 
+
 #FAQ
 @epoller.route('/faq')
 @login_required
 def faq():
     return render_template("faq.html",user=session["firstname"],name='faq') 
 
+
+#ERROR PAGE
 @epoller.errorhandler(404)
 def page_not_found(e):
     return render_template('error_page.html'), 404
+
+
+
 
 #MAIN FUNCTION
 if __name__=='__main__':
